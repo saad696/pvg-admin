@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Row, Col, Form, Input, Select, Button, Popconfirm } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { LoadingContext } from "../context/LoadingContext";
@@ -19,7 +19,7 @@ const BasicDetails = () => {
   const { loading, setLoading } = useContext(LoadingContext);
   const { user } = useContext(UserContext);
   const [basicDetailsForm] = useForm();
-  
+
   const location = useLocation();
   const id = location.pathname.split("/")[1];
 

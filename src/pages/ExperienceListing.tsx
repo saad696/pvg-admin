@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { firebaseService } from "../firebase/firebaseService";
-import { Empty, Tabs, message } from "antd";
+import { Empty, Tabs } from "antd";
 import { LoadingContext } from "../context/LoadingContext";
 import { ExperienceCard, PageTitle } from "..";
-import { status, tables } from "../utils/constants";
+import { status } from "../utils/constants";
 
 const ExperienceListing = () => {
   const { setLoading } = useContext(LoadingContext);
