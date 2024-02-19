@@ -22,7 +22,7 @@ import { firebaseService } from "../firebase/firebaseService";
 import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PageTitle } from "..";
-import { status, tables } from "../utils/constants";
+import { dateTimeFormats, status, tables } from "../utils/constants";
 
 const getItems: (
   panelStyle: CSSProperties,
@@ -46,16 +46,16 @@ const getItems: (
             {idx + 1} - {data.name}
           </Typography>
           <Typography className="!text-xs font-semibold !text-gray-400 lg:hidden">
-            {moment(JSON.parse(data.duration)[0].$d).format("MMMM YYYY")} -
-            {moment(JSON.parse(data.duration)[1].$d).format("MMMM YYYY")}
+            {moment(JSON.parse(data.duration)[0].$d).format(dateTimeFormats.month_year)} -
+            {moment(JSON.parse(data.duration)[1].$d).format(dateTimeFormats.month_year)}
           </Typography>
           <Space
             className="!hidden lg:!flex"
             split={<Divider type="vertical" />}
           >
             <Typography className="font-semibold !text-gray-400">
-              {moment(JSON.parse(data.duration)[0].$d).format("MMMM YYYY")} -
-              {moment(JSON.parse(data.duration)[1].$d).format("MMMM YYYY")}
+              {moment(JSON.parse(data.duration)[0].$d).format(dateTimeFormats.month_year)} -
+              {moment(JSON.parse(data.duration)[1].$d).format(dateTimeFormats.month_year)}
             </Typography>
             <Button type="text" href={data.url} target="_blank">
               <LinkOutlined />

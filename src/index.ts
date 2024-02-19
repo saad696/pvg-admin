@@ -9,6 +9,7 @@ export { default as AddTags } from "./pages/AddTags";
 export { default as BlogListing } from "./pages/BlogListing";
 export { default as BlogDetails } from "./pages/BlogDetails";
 export { default as Experience } from "./pages/Experience";
+export { default as ExperienceListing } from "./pages/ExperienceListing";
 
 /* auth */
 export { default as Login } from "./auth/Login";
@@ -29,3 +30,4 @@ export { default as PageHeader } from "./common/PageHeader";
 export { default as TagsList } from "./components/TagsList";
 export { default as BlogListCard } from "./components/BlogListCard";
 export { default as BlogListCardActions } from "./components/BlogListCardActions";
+export { default as ExperienceCard } from "./components/ExperienceCard";

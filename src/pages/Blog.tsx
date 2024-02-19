@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 
 import { Form, Input, Row, Col, Button, Select, Card, message } from "antd";
-import { EyeOutlined, EditOutlined } from "@ant-design/icons";
+import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import { Editor, UploadFile, PageHeader } from "..";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LoadingContext } from "../context/LoadingContext";
@@ -145,7 +145,7 @@ const Blog = () => {
           {
             name: "New Blog",
             visible: !!location.pathname.includes("edit"),
-            icon: <EditOutlined />,
+            icon: <PlusOutlined />,
             route: `/${id}/blog`,
           },
           {

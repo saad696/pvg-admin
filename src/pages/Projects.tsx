@@ -21,7 +21,7 @@ import { firebaseService } from "../firebase/firebaseService";
 import { v4 as uuidv4 } from "uuid";
 import {
   EyeOutlined,
-  EditOutlined,
+  PlusOutlined,
   DeleteOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
@@ -169,7 +169,7 @@ const Projects = () => {
           {
             name: "New Project",
             visible: !!location.pathname.includes("edit"),
-            icon: <EditOutlined />,
+            icon: <PlusOutlined />,
             route: `/${id}/blog`,
           },
           {
@@ -188,7 +188,7 @@ const Projects = () => {
         form={projectForm}
       >
         <Row gutter={32}>
-          <Col xs={24} md={4}>
+          <Col xs={24} lg={4}>
             <Form.Item<FieldType>
               label="Thumbnail"
               name="thumbnail"
@@ -202,9 +202,9 @@ const Projects = () => {
               />
             </Form.Item>
           </Col>
-          <Col xs={24} md={20}>
+          <Col xs={24} lg={20}>
             <Row gutter={[16, 16]} align={"middle"}>
-              <Col xs={12}>
+              <Col xs={24} md={12}>
                 <Form.Item<FieldType>
                   label="Project Name"
                   name="name"
@@ -213,7 +213,7 @@ const Projects = () => {
                   <Input allowClear />
                 </Form.Item>
               </Col>
-              <Col xs={12}>
+              <Col xs={24} md={12}>
                 <Form.Item<FieldType>
                   label="Project Duration"
                   name="duration"
@@ -222,7 +222,7 @@ const Projects = () => {
                   <RangePicker className="w-full" picker="month" allowClear />
                 </Form.Item>
               </Col>
-              <Col xs={12}>
+              <Col xs={24} md={12}>
                 <Form.Item<FieldType>
                   label="Technologies Used"
                   name={`tech`}
@@ -240,7 +240,7 @@ const Projects = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col xs={12}>
+              <Col xs={24} md={12}>
                 <Form.Item<FieldType>
                   label="Project URL"
                   name={`url`}
