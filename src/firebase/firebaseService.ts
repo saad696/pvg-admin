@@ -7,10 +7,14 @@ import {
   updateDoc,
   deleteField,
   arrayUnion,
+  query,
+  collection,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { message } from "antd";
 import { User as FirebaseUser } from "firebase/auth";
-import { tables } from "../utils/constants";
+import { status, tables } from "../utils/constants";
 import {
   getStorage,
   ref,
@@ -472,6 +476,95 @@ export const firebaseService = {
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong, deletion failed.");
+    }
+  },
+  postExperience: async (
+    payload: IExperience,
+    id: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const docRef = doc(db, tables.experience, id);
+    try {
+      await setDoc(docRef, {
+        ...payload,
+      });
+      message.success("Submitted sucessfully");
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      message.error(
+        "Something went wrong, cannot create experience. Please try again!"
+      );
+    }
+  },
+  updateExperience: async (
+    payload: IExperience,
+    id: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const docRef = doc(db, tables.experience, id);
+    try {
+      await updateDoc(docRef, {
+        ...payload,
+      });
+      message.success("Updated sucessfully");
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      message.error(
+        "Something went wrong, cannot create experience. Please try again!"
+      );
+    }
+  },
+  deleteExperience: async (
+    id: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const docRef = doc(db, tables.experience, id);
+    try {
+      const data = (await getDoc(docRef)).data();
+      await updateDoc(docRef, {
+        ...data,
+        status: status.DELETED,
+      });
+      message.success("Deleted sucessfully");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      message.error(
+        "Something went wrong, cannot create experience. Please try again!"
+      );
+    }
+  },
+  getExperience: async (
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const docRef = query(collection(db, tables.experience));
+    try {
+      const experienceSnapshot = await getDocs(docRef);
+      setLoading(false);
+      const data: any = [];
+
+      experienceSnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          data.push({ ...doc.data(), uuid: doc.id });
+        }
+      });
+
+      return data;
+    } catch (error) {
+      setLoading(false);
+      message.error("Something went wrong, cannot fetch projects.");
+    }
+  },
+  getExperienceById: async (uuid: string) => {
+    const docRef = doc(db, tables.experience, uuid);
+    try {
+      return (await getDoc(docRef)).data() as IExperience;
+    } catch (error) {
+      message.error("Something went wrong, cannot fetch projects.");
     }
   },
 };

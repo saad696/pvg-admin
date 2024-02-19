@@ -8,6 +8,7 @@ import {
   Contact,
   CreateUser,
   Experience,
+  ExperienceListing,
   Home,
   Projects,
   ProjectsListing,
@@ -72,12 +73,36 @@ export const router = createBrowserRouter([
           },
           {
             path: "experience",
-            element: (
-              <ProtectedRoutes
-                Component={Experience}
-                role={roleAccess.portfolio}
-              />
-            ),
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: (
+                  <ProtectedRoutes
+                    Component={Experience}
+                    role={roleAccess.portfolio}
+                  />
+                ),
+              },
+              {
+                path: "listing",
+                element: (
+                  <ProtectedRoutes
+                    Component={ExperienceListing}
+                    role={roleAccess.portfolio}
+                  />
+                ),
+              },
+              {
+                path: ":id/edit",
+                element: (
+                  <ProtectedRoutes
+                    Component={Experience}
+                    role={roleAccess.portfolio}
+                  />
+                ),
+              },
+            ],
           },
           {
             path: "blog",

@@ -63,6 +63,7 @@ export const regexp = {
 
 export const dateTimeFormats = {
   default: "MMMM Do YYYY",
+  month_year: "MMMM YYYY"
 };
 
 export const tables = {
@@ -71,6 +72,7 @@ export const tables = {
   userRoles: "user-roles",
   blogs: "blogs",
   project: "projects",
+  experience: "experience",
 };
 
 export const imageTypes = {
@@ -93,6 +95,11 @@ export const status = {
   INACTIVE: "Inactive",
   DELETED: 'Deleted'
 };
+
+export const experienceFormOptions = {
+  employment_type: ['Part Time', 'Full Time', 'Freelance'],
+  location_type: ['Work from home', 'Work from office', 'Hybrid']
+}
 
 export const tagsColor = [
   "processing",

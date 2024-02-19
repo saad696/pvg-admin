@@ -19,11 +19,12 @@ const BasicDetails = () => {
   const { loading, setLoading } = useContext(LoadingContext);
   const { user } = useContext(UserContext);
   const [basicDetailsForm] = useForm();
+  
   const location = useLocation();
+  const id = location.pathname.split("/")[1];
 
   const [socialCount, setSocialCount] = useState(1);
   const [basicDetails, setBasicDetails] = useState<any>();
-  const [id, setId] = useState<string>(location.pathname.split("/")[1]);
 
   const addRemoveSocial = (add: boolean): void => {
     setSocialCount((prevState) => (add ? prevState + 1 : prevState - 1));
@@ -88,10 +89,6 @@ const BasicDetails = () => {
     firebaseService.deleteSocialMap(basicDetails[`mediaType-${idx}`], id);
     addRemoveSocial(false);
   };
-
-  useEffect(() => {
-    setId(location.pathname.split("/")[1]);
-  }, [location.pathname]);
 
   useEffect(() => {
     getBasicDetails();

@@ -69,3 +69,18 @@ interface IProject {
   status: string;
   images: string[];
 }
+
+interface IExperience {
+  title: string;
+  employment_type: string;
+  company_name: string;
+  location: string;
+  location_type: string;
+  currently_working: boolean;
+  start_date: string | Date;
+  end_date?: string | Date;
+  description: string;
+  skills_used: string[];
+  uuid: string;
+  status: string;
+}

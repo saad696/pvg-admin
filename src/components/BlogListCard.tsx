@@ -17,7 +17,8 @@ const BlogListCard: React.FC<Props> = ({ data, pageId, onConfirmDelete }) => {
   return (
     <>
       <Card
-        className="shadow-md !mb-6"
+        hoverable
+        className="!mb-6"
         actions={[
           <BlogListCardActions {...{ data, pageId, onConfirmDelete }} />,
         ]}
