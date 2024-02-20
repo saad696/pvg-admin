@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Tabs, Tag, Empty, Button, Popconfirm } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Tabs, Tag, Empty } from "antd";
 import { ConfirmDelete } from "..";
-import { firebaseService } from "../firebase/firebaseService";
 
 const { CheckableTag } = Tag;
 

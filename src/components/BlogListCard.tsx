@@ -1,8 +1,7 @@
-import React, { ReactNode } from "react";
-import { Card, Typography, Row, Col, Tag, Button, Popconfirm } from "antd";
-import { EditOutlined, EyeOutlined, DeleteOutlined } from "@ant-design/icons";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { status, tagsColor } from "../utils/constants";
+import React from "react";
+import { Card, Typography, Row, Col, Tag } from "antd";
+import { useNavigate } from "react-router-dom";
+import { tagsColor } from "../utils/constants";
 import { BlogListCardActions } from "..";
 
 interface Props {

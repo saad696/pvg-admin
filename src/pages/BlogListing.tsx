@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { BlogListCard, PageTitle } from "..";
 import { useLocation, useNavigate } from "react-router-dom";
 import { firebaseService } from "../firebase/firebaseService";
