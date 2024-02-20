@@ -84,3 +84,18 @@ interface IExperience {
   uuid: string;
   status: string;
 }
+
+interface IContact {
+  email: string;
+  mobile: string;
+  name: string;
+  subject: string;
+  query: string;
+  timestamp: Date;
+  uuid: string;
+}
+
+interface ContactDetailsResult {
+  contacts: IContact[];
+  lastDoc: any;
+}

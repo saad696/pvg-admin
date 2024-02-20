@@ -10,6 +10,9 @@ import {
   query,
   collection,
   getDocs,
+  orderBy,
+  startAfter,
+  limit,
 } from "firebase/firestore";
 import { message } from "antd";
 import { User as FirebaseUser } from "firebase/auth";
@@ -564,6 +567,45 @@ export const firebaseService = {
       return (await getDoc(docRef)).data() as IExperience;
     } catch (error) {
       message.error("Something went wrong, cannot fetch projects.");
+    }
+  },
+  getContactDetails: async (
+    id: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    page: number,
+    pageSize: number,
+    lastDoc: any
+  ): Promise<ContactDetailsResult | undefined> => {
+    const docRef = collection(db, `contacts/${id}/contact`);
+    try {
+      // Create a query against the collection.
+      let contactsQuery = query(docRef, orderBy("name"), limit(pageSize));
+
+      // If we have a last document, start after it in the next query
+      if (lastDoc && page > 1) {
+        contactsQuery = query(
+          docRef,
+          orderBy("name"),
+          startAfter(lastDoc),
+          limit(pageSize)
+        );
+      }
+
+      const querySnapshot = await getDocs(contactsQuery);
+
+      // Get data from docs
+      const contacts = querySnapshot.docs.map(
+        (doc) => ({ ...doc.data(), uuid: doc.id } as IContact)
+      );
+
+      // Set last document for next query
+      lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+      setLoading(false);
+      return { contacts, lastDoc };
+    } catch (error) {
+      setLoading(false);
+      message.error("Something went wrong, cannot fetch blogs.");
     }
   },
 };

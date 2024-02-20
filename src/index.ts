@@ -31,3 +31,4 @@ export { default as TagsList } from "./components/TagsList";
 export { default as BlogListCard } from "./components/BlogListCard";
 export { default as BlogListCardActions } from "./components/BlogListCardActions";
 export { default as ExperienceCard } from "./components/ExperienceCard";
+export { default as DataTable } from "./components/DataTable";

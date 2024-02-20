@@ -10,6 +10,7 @@ type ActionWithRoute = {
   icon: ReactNode;
   route: string;
   onClick?: never;
+  loading?: boolean;
 };
 
 type ActionWithOnClick = {
@@ -18,6 +19,7 @@ type ActionWithOnClick = {
   icon: ReactNode;
   route?: never;
   onClick: () => any;
+  loading?: boolean;
 };
 
 interface PageHeaderProps {
@@ -44,6 +46,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, actions }) => {
                         size={width < 768 ? "small" : "middle"}
                         icon={x.icon}
                         type="primary"
+                        loading={x.loading}
+                        disabled={x.loading}
                         className="!text-xs md:text-base"
                       >
                         {x.name}
@@ -54,6 +58,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, actions }) => {
                       size={width < 768 ? "small" : "middle"}
                       icon={x.icon}
                       type="primary"
+                      loading={x.loading}
+                      disabled={x.loading}
                       className="!text-xs md:text-base"
                     >
                       {x.name}
