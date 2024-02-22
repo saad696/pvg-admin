@@ -1,3 +1,4 @@
+
 interface LoginFormData {
   email: string;
   password: string;
@@ -91,11 +92,15 @@ interface IContact {
   name: string;
   subject: string;
   query: string;
-  timestamp: Date;
+  timestamp: any;
   uuid: string;
 }
 
 interface ContactDetailsResult {
   contacts: IContact[];
   lastDoc: any;
+}
+
+interface DataType {
+  [key: string]: string | number;
 }

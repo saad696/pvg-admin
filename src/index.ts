@@ -25,6 +25,7 @@ export { default as Editor } from "./common/Editor";
 export { default as ConfirmDelete } from "./common/ConfirmDelete";
 export { default as UploadFile } from "./common/UploadFiles";
 export { default as PageHeader } from "./common/PageHeader";
+export { default as Export } from "./common/Export";
 
 /* components */
 export { default as TagsList } from "./components/TagsList";

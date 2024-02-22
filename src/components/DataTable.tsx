@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Table, Input, Button, Space } from "antd";
-import type { FilterDropdownProps } from "antd/es/table/interface";
+import type {
+  FilterDropdownProps,
+  ExpandableConfig,
+} from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
+// @ts-ignore
 import Highlighter from "react-highlight-words";
+import { Export } from "..";
 
 type ColumnsType<T> = {
   title: string;
@@ -12,20 +17,24 @@ type ColumnsType<T> = {
 }[];
 
 interface DataTableProps<T> {
-  columns: ColumnsType<T>;
+  columns: ColumnsType<T> | any;
   fetchData: (page: number, pageSize: number) => Promise<T[]>;
   searchableColumns: string[];
+  expandableOptions: ExpandableConfig<T>;
+  exportOptions: { show: boolean; file_name: string };
 }
 
 const DataTable = <T extends Record<string, any>>({
   columns,
   fetchData,
   searchableColumns,
+  expandableOptions,
+  exportOptions,
 }: DataTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [tableKey, setTableKey] = useState(Math.random());
@@ -132,7 +141,7 @@ const DataTable = <T extends Record<string, any>>({
       ),
   });
 
-  const newColumns = columns.map((col) => ({
+  const newColumns = columns.map((col: any) => ({
     ...col,
     ...(searchableColumns.includes(col.dataIndex)
       ? getColumnSearchProps(col.dataIndex)
@@ -140,21 +149,32 @@ const DataTable = <T extends Record<string, any>>({
   }));
 
   return (
-    <Table<T>
-      key={tableKey}
-      dataSource={data}
-      columns={newColumns}
-      rowKey={(data) => data.uuid}
-      pagination={{
-        current: currentPage,
-        pageSize,
-        total: data.length,
-        showSizeChanger: true,
-        pageSizeOptions: ["5", "10", "15", "20", "25", "30", "40", "50"],
-      }}
-      loading={loading}
-      onChange={handleTableChange}
-    />
+    <>
+      {exportOptions.show && (
+        <Export
+          data={data}
+          columns={columns}
+          fileName={exportOptions.file_name}
+        />
+      )}
+      <Table<T>
+        key={tableKey}
+        dataSource={data}
+        columns={newColumns}
+        rowKey={(data) => data.uuid}
+        pagination={{
+          current: currentPage,
+          pageSize,
+          total: data.length,
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "15", "20", "25", "30", "40", "50"],
+        }}
+        loading={loading}
+        onChange={handleTableChange}
+        scroll={{ x: "max-content" }}
+        expandable={expandableOptions}
+      />
+    </>
   );
 };
 

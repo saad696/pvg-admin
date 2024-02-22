@@ -21,6 +21,8 @@
     "firebase-functions": "^4.7.0",
     "html-react-parser": "^5.1.2",
     "jodit-react": "^4.0.9",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.3",
     "moment": "^2.30.1",
@@ -31,7 +33,8 @@
     "react-router-dom": "^6.21.3",
     "remark-gfm": "^4.0.0",
     "sort-by": "^1.2.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
