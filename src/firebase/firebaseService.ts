@@ -10,6 +10,12 @@ import {
   query,
   collection,
   getDocs,
+  orderBy,
+  startAfter,
+  limit,
+  where,
+  Timestamp,
+  increment,
 } from "firebase/firestore";
 import { message } from "antd";
 import { User as FirebaseUser } from "firebase/auth";
@@ -21,6 +27,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import moment from "moment";
 
 export const firebaseService = {
   uploadImage: async (
@@ -210,6 +217,8 @@ export const firebaseService = {
       message.success("Deleted sucessfully");
       setLoading(false);
     } catch (error) {
+      console.log(error);
+
       setLoading(false);
       message.error(
         "Something went wrong, cannot delete tags. Please try again!"
@@ -226,16 +235,12 @@ export const firebaseService = {
       const data = await firebaseService.uploadImage(payload.thumbnail);
 
       if (data && data.url) {
-        await setDoc(
-          docRef,
-          {
-            blog: arrayUnion({
-              ...payload,
-              thumbnail: { url: data.url, path: data.path },
-            }),
-          },
-          { merge: true }
-        );
+        const newCollectionRef = collection(docRef, "blog");
+        const newDocRef = doc(newCollectionRef, payload.uuid);
+        await setDoc(newDocRef, {
+          ...payload,
+          thumbnail: { url: data.url, path: data.path },
+        });
         message.success("Submitted sucessfully");
       } else {
         message.success("Thumbnail upload failed, please try again.");
@@ -255,7 +260,7 @@ export const firebaseService = {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     updatedBlogData: Partial<BlogDetails>
   ) => {
-    const docRef = doc(db, tables.blogs, id);
+    const docRef = doc(db, tables.blogs, id, "blog", blogUuid);
 
     try {
       if (updatedBlogData.thumbnail?.size) {
@@ -268,25 +273,7 @@ export const firebaseService = {
           path: data.path,
         };
       }
-      const blogSnap = await getDoc(docRef);
-
-      if (!blogSnap.exists()) {
-        message.error("No such document found!");
-        return;
-      }
-
-      const blogs = blogSnap.data().blog as BlogDetails[];
-
-      const blogIndex = blogs.findIndex((blog) => blog.uuid === blogUuid);
-
-      if (blogIndex === -1) {
-        message.error("No such blog found!");
-        return;
-      }
-
-      blogs[blogIndex] = { ...blogs[blogIndex], ...updatedBlogData };
-
-      await updateDoc(docRef, { blog: blogs });
+      await updateDoc(docRef, updatedBlogData);
 
       setLoading(false);
     } catch (error) {
@@ -300,10 +287,12 @@ export const firebaseService = {
   ) => {
     const docRef = doc(db, tables.blogs, id);
     try {
-      const blogsDocument = await getDoc(docRef);
+      const querySnapshot = await getDocs(collection(docRef, "blog"));
       setLoading(false);
-      return blogsDocument.data() as { blog: BlogDetails[] };
+      return querySnapshot.docs.map((doc) => doc.data()) as BlogDetails[];
     } catch (error) {
+      console.log(error);
+
       setLoading(false);
       message.error("Something went wrong, cannot fetch blogs.");
     }
@@ -313,12 +302,12 @@ export const firebaseService = {
     id: string,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    const docRef = doc(db, tables.blogs, id);
+    const docRef = doc(db, tables.blogs, id, "blog", uuid);
     try {
       const blogsDocument = await getDoc(docRef);
-      const { blog } = blogsDocument.data() as { blog: BlogDetails[] };
+      const blog = blogsDocument.data() as BlogDetails;
       setLoading(false);
-      return blog.filter((x) => x.uuid === uuid)[0];
+      return blog;
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong, cannot fetch blogs.");
@@ -513,7 +502,7 @@ export const firebaseService = {
     } catch (error) {
       setLoading(false);
       message.error(
-        "Something went wrong, cannot create experience. Please try again!"
+        "Something went wrong, cannot update experience. Please try again!"
       );
     }
   },
@@ -564,6 +553,122 @@ export const firebaseService = {
       return (await getDoc(docRef)).data() as IExperience;
     } catch (error) {
       message.error("Something went wrong, cannot fetch projects.");
+    }
+  },
+  getContactDetails: async (
+    id: string,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    page: number,
+    pageSize: number,
+    lastDoc: any,
+    status = "all"
+  ): Promise<ContactDetailsResult | undefined> => {
+    const docRef = collection(db, `contacts/${id}/contact`);
+    try {
+      // Create a query against the collection.
+      let contactsQuery = query(docRef, orderBy("name"), limit(pageSize));
+
+      // Add condition based on status
+      if (status === "unread") {
+        contactsQuery = query(
+          docRef,
+          where("isRead", "==", false),
+          orderBy("name"),
+          limit(pageSize)
+        );
+      } else if (status === "read") {
+        contactsQuery = query(
+          docRef,
+          where("isRead", "==", true),
+          orderBy("name"),
+          limit(pageSize)
+        );
+      }
+
+      // If we have a last document, start after it in the next query
+      if (lastDoc && page > 1) {
+        contactsQuery = query(
+          docRef,
+          orderBy("name"),
+          startAfter(lastDoc),
+          limit(pageSize)
+        );
+      }
+
+      const querySnapshot = await getDocs(contactsQuery);
+
+      // Get data from docs
+      const contacts = querySnapshot.docs.map(
+        (doc) => ({ ...doc.data(), uuid: doc.id } as IContact)
+      );
+
+      // Set last document for next query
+      lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+      setLoading(false);
+      return { contacts, lastDoc };
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+      message.error("Something went wrong, cannot fetch contact details.");
+    }
+  },
+  markMessageASRead: async (
+    id: string,
+    payload: IContact,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const docRef = doc(db, tables.contact, id, "contact", payload.uuid);
+
+    try {
+      await updateDoc(docRef, {
+        ...payload,
+        isRead: true,
+        timestamp: Timestamp.fromDate(
+          moment(payload.timestamp, "MMMM Do YYYY").toDate()
+        ),
+      });
+
+      await firebaseService.updateCount("contacts", id);
+
+      message.success("Message marked as read");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+      message.error("Something went wrong, please try again!");
+    }
+  },
+  getCount: async (collectionName: string, id: string) => {
+    const docRef = doc(db, tables.pageSize, collectionName, "count", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as { count: number; read: number; unread: number };
+    } else {
+      // handle error
+      message.error("Count document does not exist");
+
+      return {
+        count: 0,
+        read: 0,
+        unread: 0,
+      };
+    }
+  },
+  updateCount: async (collectionName: string, id: string) => {
+    const docRef = doc(db, tables.pageSize, collectionName, "count", id);
+    try {
+      await updateDoc(docRef, { read: increment(1) });
+      await updateDoc(docRef, { unread: increment(-1) });
+    } catch (error) {
+      console.log(error);
     }
   },
 };

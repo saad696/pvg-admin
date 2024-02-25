@@ -12,12 +12,12 @@ const Home = () => {
 
   useEffect(() => {
     // Store the last visited route
-    if(location.pathname === '/') return
-    sessionStorage.setItem('lastVisitedRoute', location.pathname);
+    if (location.pathname === "/") return;
+    sessionStorage.setItem("lastVisitedRoute", location.pathname);
   }, [location]);
 
   useEffect(() => {
-    const lastVisitedRoute = sessionStorage.getItem('lastVisitedRoute');
+    const lastVisitedRoute = sessionStorage.getItem("lastVisitedRoute");
     navigate(lastVisitedRoute || helperService.defaultRoute(user.role));
   }, []);
 

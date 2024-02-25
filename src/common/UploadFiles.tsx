@@ -84,8 +84,6 @@ const UploadFiles: React.FC<UploadFileProps> = ({
     </button>
   );
 
-  console.log(uploadedFile, showCropper);
-
   return (
     <>
       {uploadedFile && uploadedFile.url ? (

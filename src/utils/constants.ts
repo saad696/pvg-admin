@@ -73,6 +73,8 @@ export const tables = {
   blogs: "blogs",
   project: "projects",
   experience: "experience",
+  contact: 'contacts',
+  pageSize: 'pageSizes'
 };
 
 export const imageTypes = {

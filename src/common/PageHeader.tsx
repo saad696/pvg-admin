@@ -45,6 +45,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, actions }) => {
                         icon={x.icon}
                         type="primary"
                         className="!text-xs md:text-base"
+                        onClick={x.onClick}
                       >
                         {x.name}
                       </Button>
@@ -55,6 +56,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, actions }) => {
                       icon={x.icon}
                       type="primary"
                       className="!text-xs md:text-base"
+                      onClick={x.onClick}
                     >
                       {x.name}
                     </Button>
