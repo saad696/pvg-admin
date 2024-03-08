@@ -187,7 +187,7 @@ const Projects = () => {
         layout="vertical"
         form={projectForm}
       >
-        <Row gutter={32}>
+        <Row gutter={16}>
           <Col xs={24} lg={4}>
             <Form.Item<FieldType>
               label="Thumbnail"

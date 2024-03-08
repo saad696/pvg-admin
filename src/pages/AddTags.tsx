@@ -96,7 +96,7 @@ const AddTags = () => {
   return (
     <>
       <PageTitle title="Create Tags" />
-      <Row gutter={32}>
+      <Row gutter={16}>
         <Col xs={24} lg={16}>
           <Form
             name="create-user"

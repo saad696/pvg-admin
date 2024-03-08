@@ -1,6 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import {
   AddTags,
+  Announcements,
   BasicDetails,
   Blog,
   BlogDetails,
@@ -10,8 +11,11 @@ import {
   Experience,
   ExperienceListing,
   Home,
+  HostRides,
+  Newsletter,
   Projects,
   ProjectsListing,
+  RegisteredUsers,
 } from ".";
 import Login from "./auth/Login";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
@@ -161,36 +165,45 @@ export const router = createBrowserRouter([
         path: "vikin",
         children: [
           {
-            path: "basic-details",
+            path: "host-ride",
+            element: (
+              <ProtectedRoutes Component={HostRides} role={roleAccess.vikin} />
+            ),
+          },
+          {
+            path: "announcements",
             element: (
               <ProtectedRoutes
-                Component={BasicDetails}
-                role={roleAccess.portfolio}
+                Component={Announcements}
+                role={roleAccess.vikin}
               />
             ),
           },
           {
-            path: "projects",
+            path: "newsletter",
+            element: (
+              <ProtectedRoutes Component={Newsletter} role={roleAccess.vikin} />
+            ),
+          },
+          {
+            path: "users",
             element: (
               <ProtectedRoutes
-                Component={Projects}
-                role={roleAccess.portfolio}
+                Component={RegisteredUsers}
+                role={roleAccess.vikin}
               />
             ),
           },
           {
             path: "Blog",
             element: (
-              <ProtectedRoutes Component={Blog} role={roleAccess.portfolio} />
+              <ProtectedRoutes Component={Blog} role={roleAccess.vikin} />
             ),
           },
           {
             path: "contact",
             element: (
-              <ProtectedRoutes
-                Component={Contact}
-                role={roleAccess.portfolio}
-              />
+              <ProtectedRoutes Component={Contact} role={roleAccess.vikin} />
             ),
           },
         ],

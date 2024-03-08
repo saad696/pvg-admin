@@ -12,6 +12,7 @@ const App = () => {
   const [user, setUser] = useState<UserContext>({
     user: null,
     role: "",
+    subRole: "",
     isLoggedIn: false,
   });
 
@@ -37,6 +38,7 @@ const App = () => {
               setUser({
                 user: _user,
                 role: userRole.data().role,
+                subRole: userRole.data().subRole || "",
                 isLoggedIn: true,
               });
             } else {
@@ -51,7 +53,7 @@ const App = () => {
         }
       } else {
         setLoading(false);
-        setUser({ user: null, role: "", isLoggedIn: false });
+        setUser({ user: null, role: "", subRole: "", isLoggedIn: false });
         auth.signOut();
       }
     });

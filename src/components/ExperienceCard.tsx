@@ -37,7 +37,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = (props) => {
   return (
     <>
       <Card hoverable>
-        <Row gutter={32}>
+        <Row gutter={16}>
           <Col xs={24} md={22}>
             <Typography.Title className="!text-lg underline capitalize">
               {props.title}

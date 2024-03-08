@@ -134,7 +134,7 @@ const BlogListing = () => {
           },
         ]}
       />
-      <Row gutter={32}>
+      <Row gutter={16}>
         {/* filters for mobile screens */}
         <Col xs={24} lg={0} className="mb-12">
           <BlogFilters
@@ -157,7 +157,7 @@ const BlogListing = () => {
               key: _status,
               tabKey: _status,
               children: (
-                <Row gutter={32}>
+                <Row gutter={16}>
                   {blogStatusBased?.length ? (
                     blogStatusBased.map((blog) => (
                       <Col xs={24} md={12}>

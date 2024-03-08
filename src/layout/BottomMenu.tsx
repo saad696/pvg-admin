@@ -43,7 +43,7 @@ const BottomMenu: React.FC<props> = ({ open, onClose }) => {
         key={"bottom"}
         height={250}
       >
-        <Row gutter={32}>
+        <Row gutter={16}>
           {sideMenu.map((menu) => (
             <Col xs={6}>
               <h4 className="font-semibold text-gray-400">{menu.label}</h4>
