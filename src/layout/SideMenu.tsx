@@ -23,24 +23,34 @@ const SideMenu: React.FC<props> = ({ isCollapsed }) => {
         icon: React.createElement(x.icon),
         label: x.name,
 
-        children: x.children.map((y) => {
-          return {
-            key: y.path,
-            label: y.name,
-            onClick: () => navigate(y.path),
-          };
-        }),
+        children: x.children
+          .filter((x) => x.visibility.includes(user.subRole))
+          .map((y) => {
+            return {
+              key: y.path,
+              label: y.name,
+              onClick: () => navigate(y.path),
+            };
+          }),
       };
     });
 
   const defaultOpenMenu = (): string[] => {
-    if (sessionStorage.getItem("lastVisitedRoute")?.includes("portfolio"))
+    if (
+      user.role === "vikin" ||
+      user.role === "graphyl" ||
+      user.role === "portfolio"
+    ) {
       return ["sub1"];
-    else if (sessionStorage.getItem("lastVisitedRoute")?.includes("vikin"))
-      return ["sub2"];
-    else if (sessionStorage.getItem("lastVisitedRoute")?.includes("graphyl"))
-      return ["sub3"];
-    else return ["sub4"];
+    } else {
+      if (sessionStorage.getItem("lastVisitedRoute")?.includes("portfolio"))
+        return ["sub1"];
+      else if (sessionStorage.getItem("lastVisitedRoute")?.includes("vikin"))
+        return ["sub2"];
+      else if (sessionStorage.getItem("lastVisitedRoute")?.includes("graphyl"))
+        return ["sub3"];
+      else return ["sub4"];
+    }
   };
 
   return (

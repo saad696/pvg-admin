@@ -8,12 +8,14 @@ interface CreateUserForm {
   password: string;
   confirmPassword: string;
   role: string;
+  subRole: string;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface UserContext {
   user: any;
   role: string;
+  subRole: string;
   isLoggedIn: boolean;
 }
 
@@ -93,7 +95,44 @@ interface IContact {
   query: string;
   timestamp: any;
   uuid: string;
-  isRead: boolean
+  isRead: boolean;
+}
+
+interface IVikinRider {
+  name: string;
+  phone: string;
+  email: string;
+  bio: string;
+  profile_picture: any;
+  bikes: string[];
+  joinedAt: string | Date;
+  is_active: boolean;
+  user_id: string;
+  socials: { [key: string]: string }[];
+  blood_group: string;
+  rides_joined: IHostRide[];
+}
+
+interface IHostRideForm {
+  title: string;
+  description: string;
+  start_date: string;
+  route: string;
+  thumbnail: string;
+  average_kilometers: number;
+  is_published: boolean;
+}
+
+interface IHostRide extends IHostRideForm {
+  has_started: boolean;
+  has_ended: boolean;
+  users_joined: IVikinRider[];
+  status: string;
+  uuid: string;
+  createdAt: Date | string;
+  createdBy: string;
+  updatedAt: Date | string;
+  updatedBy: string;
 }
 
 interface ContactDetailsResult {

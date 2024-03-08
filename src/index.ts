@@ -10,6 +10,10 @@ export { default as BlogListing } from "./pages/BlogListing";
 export { default as BlogDetails } from "./pages/BlogDetails";
 export { default as Experience } from "./pages/Experience";
 export { default as ExperienceListing } from "./pages/ExperienceListing";
+export { default as HostRides } from "./pages/HostRides";
+export { default as Announcements } from "./pages/Announcements";
+export { default as RegisteredUsers } from "./pages/RegisteredUsers";
+export { default as Newsletter } from "./pages/Newsletter";
 
 /* auth */
 export { default as Login } from "./auth/Login";

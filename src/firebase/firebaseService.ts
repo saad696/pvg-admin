@@ -59,14 +59,14 @@ export const firebaseService = {
       message.error("Something went wrong! deleting image failed");
     }
   },
-  createUser: ({ email, password, role, setLoading }: CreateUserForm) => {
+  createUser: ({ email, password, role, subRole = "", setLoading }: CreateUserForm) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
 
         if (user.uid) {
           const docRef = doc(db, tables.userRoles, user.uid);
-          return setDoc(docRef, { role });
+          return setDoc(docRef, { role, subRole });
         } else {
           setLoading(false);
           message.error("User creation failed, please try again");

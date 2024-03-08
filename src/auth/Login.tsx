@@ -35,6 +35,7 @@ const Login = () => {
           setUser({
             user: user.user,
             role: userRoleDetails.data().role,
+            subRole: userRoleDetails.data().subRole,
             isLoggedIn: true,
           });
           sessionStorage.clear();
