@@ -100,9 +100,9 @@ const Blog = () => {
     const payload = {
       ...values,
       content: editorValue,
-      createdAt: new Date(),
+      createdAt: blogDetails?.createAt || new Date(),
       updatedAt: new Date(),
-      createdBy: user.user.uid,
+      createdBy: blogDetails?.createdBy || user.user.uid,
       updatedBy: user.user.uid,
       thumbnail:
         uploadedFile === "N/A"
@@ -164,11 +164,11 @@ const Blog = () => {
         layout="vertical"
         form={blogForm}
       >
-        <Row gutter={[32, 32]}>
+        <Row gutter={[16, 16]}>
           <Col xs={24} lg={16}>
-            <Row gutter={[32, 32]}>
+            <Row gutter={[16, 16]}>
               <Col xs={24}>
-                <Row gutter={[32, 32]} align={"middle"}>
+                <Row gutter={[16, 16]} align={"middle"}>
                   <Col xs={24} lg={18}>
                     <Form.Item<FieldType>
                       label="Title"
@@ -236,7 +236,7 @@ const Blog = () => {
                   allowClear
                   style={{ width: "100%" }}
                   placeholder="Please select"
-                  options={tagsList.map((tag) => ({ label: tag, value: tag }))}
+                  options={tagsList?.map((tag) => ({ label: tag, value: tag }))}
                 />
               </Form.Item>
             </Card>

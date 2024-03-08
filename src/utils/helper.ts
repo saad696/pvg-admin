@@ -4,6 +4,7 @@ import autoTable from "jspdf-autotable";
 import { utils, writeFile } from "xlsx";
 
 import { ColumnsType } from "antd/es/table";
+import { defaultRoute } from "./constants";
 
 type ColumnType = {
   title: string;
@@ -19,7 +20,7 @@ export const helperService = {
   defaultRoute: (role: string): string => {
     return role === "admin"
       ? "/portfolio/basic-details"
-      : `${role}/basic-details`;
+      : `${role}/${defaultRoute[role]}`;
   },
   removeRepeatingStrings: (input: string): string => {
     const tags = input.split(",").map((tag) => tag.trim());

@@ -11,37 +11,89 @@ export const sidebarMenus = [
     icon: LayoutOutlined,
     visibility: ["admin", "portfolio"],
     children: [
-      { name: "Basic Details", path: "/portfolio/basic-details" },
-      { name: "Projects", path: "/portfolio/project" },
-      { name: "Experience", path: "/portfolio/experience" },
-      { name: "Blogs", path: "/portfolio/blog" },
-      { name: "Contact", path: "/portfolio/contact" },
+      {
+        name: "Basic Details",
+        path: "/portfolio/basic-details",
+        visibility: [""],
+      },
+      { name: "Projects", path: "/portfolio/project", visibility: [""] },
+      {
+        name: "Experience",
+        path: "/portfolio/experience",
+        visibility: [""],
+      },
+      { name: "Blogs", path: "/portfolio/blog", visibility: [""] },
+      { name: "Contact", path: "/portfolio/contact", visibility: [""] },
     ],
   },
   {
     name: "Vikin",
     visibility: ["admin", "vikin"],
     icon: FlagOutlined,
-    children: [{ name: "Basic Details", path: "/vikin/basic-details" }],
+    children: [
+      {
+        name: "Host Rides",
+        path: "/vikin/host-ride",
+        visibility: ["vikin_admin", "vikin_host"],
+      },
+      {
+        name: "Announcements",
+        path: "/vikin/announcements",
+        visibility: ["vikin_admin", "vikin_announcer"],
+      },
+      {
+        name: "Registered Users",
+        path: "/vikin/users",
+        visibility: ["vikin_admin"],
+      },
+      {
+        name: "Newsletter",
+        path: "/vikin/newsletter",
+        visibility: ["vikin_admin", "vikin_announcer", "vikin_blog"],
+      },
+      {
+        name: "Blogs",
+        path: "/vikin/blog",
+        visibility: ["vikin_admin", "vikin_blog"],
+      },
+      {
+        name: "Contacts",
+        path: "/vikin/contact",
+        visibility: ["vikin_admin", "vikin_announcer"],
+      },
+    ],
   },
   {
     name: "Graphyl",
     visibility: ["admin", "graphyl"],
     icon: CodeOutlined,
-    children: [{ name: "Basic Details", path: "/graphyl/basic-details" }],
+    children: [
+      {
+        name: "Basic Details",
+        path: "/graphyl/basic-details",
+        visibility: [""],
+      },
+    ],
   },
   {
     name: "Settings",
     visibility: ["admin"],
     icon: SettingOutlined,
     children: [
-      { name: "Create User", path: "/create-user" },
-      { name: "Create Tags", path: "/create-tags" },
+      { name: "Create User", path: "/create-user", visibility: [""] },
+      { name: "Create Tags", path: "/create-tags", visibility: [""] },
     ],
   },
 ];
 
 export const roles = ["Admin", "Portfolio", "Vikin", "Graphyl"];
+
+export const subRoles = [
+  "vikin_admin",
+  "vikin_blog",
+  "vikin_host",
+  "vikin_announcer",
+];
 
 export const roleAccess = {
   admin: ["admin"],
@@ -51,6 +103,11 @@ export const roleAccess = {
   all: ["admin", "portfolio", "vikin", "graphyl"],
 };
 
+export const defaultRoute: { [key: string]: string } = {
+  portfolio: "basic-details",
+  vikin: "host-ride",
+  graphyl: "basic-details",
+};
 export const regexp = {
   url: new RegExp(
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
@@ -63,18 +120,20 @@ export const regexp = {
 
 export const dateTimeFormats = {
   default: "MMMM Do YYYY",
-  month_year: "MMMM YYYY"
+  month_year: "MMMM YYYY",
 };
 
 export const tables = {
   basicDetails: "basic-details",
   blogTags: "blog-tags",
   userRoles: "user-roles",
+  userSubRoles: "user-sub-roles",
   blogs: "blogs",
   project: "projects",
   experience: "experience",
-  contact: 'contacts',
-  pageSize: 'pageSizes'
+  contact: "contacts",
+  pageSize: "pageSizes",
+  rides: 'rides'
 };
 
 export const imageTypes = {
@@ -95,13 +154,13 @@ export const imageTypes = {
 export const status = {
   ACTIVE: "Active",
   INACTIVE: "Inactive",
-  DELETED: 'Deleted'
+  DELETED: "Deleted",
 };
 
 export const experienceFormOptions = {
-  employment_type: ['Part Time', 'Full Time', 'Freelance'],
-  location_type: ['Work from home', 'Work from office', 'Hybrid']
-}
+  employment_type: ["Part Time", "Full Time", "Freelance"],
+  location_type: ["Work from home", "Work from office", "Hybrid"],
+};
 
 export const tagsColor = [
   "processing",

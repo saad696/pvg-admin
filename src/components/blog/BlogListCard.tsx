@@ -55,7 +55,7 @@ const BlogListCard: React.FC<Props> = ({ data, pageId, onConfirmDelete }) => {
         }
         bodyStyle={{ padding: 0 }}
       >
-        <Row gutter={32} align={"middle"} className="p-2">
+        <Row gutter={16} align={"middle"} className="p-2">
           <Col xs={24} lg={19} className="space-y-2">
             <Typography
               className="!text-xl font-bold !text-gray-500 hover:!text-blue-500 underline cursor-pointer"
