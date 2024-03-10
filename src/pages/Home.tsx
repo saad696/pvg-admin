@@ -11,12 +11,16 @@ const Home = () => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
+    console.log('here2');
+    
     // Store the last visited route
     if (location.pathname === "/") return;
     sessionStorage.setItem("lastVisitedRoute", location.pathname);
   }, [location]);
 
   useEffect(() => {
+    console.log('here3');
+    
     const lastVisitedRoute = sessionStorage.getItem("lastVisitedRoute");
     navigate(lastVisitedRoute || helperService.defaultRoute(user.role));
   }, []);

@@ -17,7 +17,6 @@ import { useLocation, useParams } from "react-router-dom";
 import { regexp, skills, status } from "../utils/constants";
 import { LoadingContext } from "../context/LoadingContext";
 import { firebaseService } from "../firebase/firebaseService";
-// @ts-ignore
 import { v4 as uuidv4 } from "uuid";
 import {
   EyeOutlined,

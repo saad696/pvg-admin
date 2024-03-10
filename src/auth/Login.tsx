@@ -34,7 +34,7 @@ const Login = () => {
         if (userRoleDetails.exists()) {
           setUser({
             user: user.user,
-            role: userRoleDetails.data().role,
+            role: userRoleDetails.data().main,
             subRole: userRoleDetails.data().subRole,
             isLoggedIn: true,
           });
@@ -54,7 +54,11 @@ const Login = () => {
   };
 
   useEffect(() => {
+    console.log(user);
+    
     if (user.isLoggedIn) {
+      console.log('here');
+      
       navigate("/");
     }
   }, [user]);

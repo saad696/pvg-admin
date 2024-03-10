@@ -21,6 +21,8 @@ const App = () => {
   useEffect(() => {
     setLoading(true);
     auth.onAuthStateChanged(async (_user) => {
+      console.log('here0');
+      
       if (_user) {
         if (user.role) {
           setUser((prevState) => ({
@@ -37,7 +39,7 @@ const App = () => {
             if (userRole.exists()) {
               setUser({
                 user: _user,
-                role: userRole.data().role,
+                role: userRole.data().main,
                 subRole: userRole.data().subRole || "",
                 isLoggedIn: true,
               });

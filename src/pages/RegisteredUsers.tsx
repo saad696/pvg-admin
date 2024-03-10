@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { PageTitle } from '..';
+import UsersTable from '../common/UsersTable';
 
 const RegisteredUsers = () => {
-  return (
-    <div>RegisteredUsers</div>
-  )
-}
+    return (
+        <>
+            <PageTitle title='vikin - Registered users' />
+            <UsersTable getByRide={false} showFilters={true} />
+        </>
+    );
+};
 
-export default RegisteredUsers
+export default RegisteredUsers;
