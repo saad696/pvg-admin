@@ -645,21 +645,17 @@ export const firebaseService = {
       message.error("Something went wrong, please try again!");
     }
   },
-  getCount: async (collectionName: string, id: string) => {
+  getCount: async <T>(collectionName: string, id: string) => {
     const docRef = doc(db, tables.pageSize, collectionName, "count", id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return docSnap.data() as { count: number; read: number; unread: number };
+      return docSnap.data() as T;
     } else {
       // handle error
       message.error("Count document does not exist");
 
-      return {
-        count: 0,
-        read: 0,
-        unread: 0,
-      };
+      return 0
     }
   },
   updateCount: async (collectionName: string, id: string) => {

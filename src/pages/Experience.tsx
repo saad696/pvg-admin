@@ -13,8 +13,6 @@ import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import { Editor, PageHeader } from "..";
 import { experienceFormOptions, skills, status } from "../utils/constants";
 import { LoadingContext } from "../context/LoadingContext";
-
-// @ts-ignore
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { firebaseService } from "../firebase/firebaseService";

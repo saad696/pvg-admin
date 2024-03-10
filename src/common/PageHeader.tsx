@@ -4,25 +4,19 @@ import { PageTitle } from "..";
 import { Link } from "react-router-dom";
 import useWindowDimensions from "../hooks/use-window-dimensions";
 
-type ActionWithRoute = {
+type Action = {
   visible: boolean;
   name: string;
   icon: ReactNode;
-  route: string;
-  onClick?: never;
+  route?: string;
+  onClick?: () => any;
 };
 
-type ActionWithOnClick = {
-  visible: boolean;
-  name: string;
-  icon: ReactNode;
-  route?: never;
-  onClick: () => any;
-};
+
 
 interface PageHeaderProps {
   title: string;
-  actions: ActionWithRoute[] | ActionWithOnClick[];
+  actions: Action[];
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ title, actions }) => {

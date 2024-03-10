@@ -13,7 +13,9 @@ export { default as ExperienceListing } from "./pages/ExperienceListing";
 export { default as HostRides } from "./pages/HostRides";
 export { default as Announcements } from "./pages/Announcements";
 export { default as RegisteredUsers } from "./pages/RegisteredUsers";
+export { default as RegisteredUsersDetails } from "./pages/RegisteredUsersDetails";
 export { default as Newsletter } from "./pages/Newsletter";
+export { default as RideDetails } from "./pages/RideDetails";
 
 /* auth */
 export { default as Login } from "./auth/Login";
@@ -31,6 +33,7 @@ export { default as UploadFile } from "./common/UploadFiles";
 export { default as PageHeader } from "./common/PageHeader";
 export { default as Export } from "./common/Export";
 export { default as DataTable } from "./common/DataTable";
+export { default as ViewAction } from "./common/ViewAction";
 
 /* components */
 export { default as TagsList } from "./components/TagsList";
