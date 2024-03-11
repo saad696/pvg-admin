@@ -10,6 +10,7 @@ import {
     Tooltip,
     Select,
     Button,
+    Alert,
 } from 'antd';
 import {
     EyeOutlined,
@@ -18,7 +19,7 @@ import {
 } from '@ant-design/icons';
 import { Editor, PageHeader } from '..';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { regexp, rideStatuses, status } from '../utils/constants';
+import { regexp, rideStatuses, status, tables } from '../utils/constants';
 import { LoadingContext } from '../context/LoadingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from '../context/UserContext';
@@ -54,7 +55,8 @@ const HostRides = () => {
             ...values,
             start_date: JSON.stringify(values.start_date),
             description: editorValue,
-            status: status.ACTIVE,
+            status:
+                values.status || (status.ACTIVE.toLowerCase() as RideStatus),
             users_joined:
                 rideData?.users_joined && rideData.users_joined.length
                     ? rideData.users_joined
@@ -65,6 +67,15 @@ const HostRides = () => {
             updatedAt: new Date(),
             updatedBy: user.user.uid,
         };
+
+        console.log('updated status: ', values.status);
+        console.log('current status: ', rideData?.status);
+
+        await vikinFirebaseService.updateRidesCount(
+            tables.rides,
+            rideData?.status || null,
+            (values.status || status.ACTIVE.toLowerCase()) as RideStatus
+        );
 
         setLoading(true);
         await vikinFirebaseService.hostRide(payload, setLoading, !!rideId);
@@ -109,6 +120,15 @@ const HostRides = () => {
 
     return (
         <>
+            {rideData?.status === 'completed' && (
+                <div className='mt-8'>
+                    <Alert
+                        className='font-semibold !text-green-500'
+                        type='success'
+                        message='Ride has been successfully completed!'
+                    />
+                </div>
+            )}
             <PageHeader
                 title={`${location.pathname.split('/')[1]} - ${
                     rideId ? 'Update' : 'Host'
@@ -141,6 +161,7 @@ const HostRides = () => {
                 autoComplete='off'
                 layout='vertical'
                 form={hostRideForm}
+                disabled={rideData?.status === 'completed'}
             >
                 <Row gutter={[16, 16]}>
                     <Col xs={24} md={6} lg={8}>
@@ -281,7 +302,9 @@ const HostRides = () => {
                                 htmlType='submit'
                                 className='w-full'
                                 loading={loading}
-                                disabled={loading}
+                                disabled={
+                                    loading || rideData?.status === 'completed'
+                                }
                             >
                                 Submit
                             </Button>

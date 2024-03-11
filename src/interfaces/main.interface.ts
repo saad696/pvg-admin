@@ -112,7 +112,7 @@ interface IVikinRider {
     socials: { [key: string]: string }[];
     blood_group: string;
     rides_joined: { joined_at: any; ride_id: string }[];
-    status: 'Active' | 'Deactivated'
+    status: 'Active' | 'Deactivated';
 }
 
 interface IHostRideForm {
@@ -123,11 +123,11 @@ interface IHostRideForm {
     thumbnail: string;
     average_kilometers: number;
     is_published: boolean;
+    status?: RideStatus
 }
 
 interface IHostRide extends IHostRideForm {
     users_joined: { joined_at: any; user_id: string }[];
-    status: string;
     uuid: string;
     createdAt: Date | string;
     createdBy: string;
@@ -164,3 +164,11 @@ interface status {
     COMPLETED: string;
     ONGOING: string;
 }
+
+type RideStatus =
+    | 'count'
+    | 'active'
+    | 'inactive'
+    | 'ongoing'
+    | 'completed'
+    | 'deleted';

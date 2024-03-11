@@ -15,6 +15,7 @@ import {
     limit,
     where,
     updateDoc,
+    increment,
 } from 'firebase/firestore';
 import { message } from 'antd';
 import { tables } from '../utils/constants';
@@ -207,6 +208,30 @@ export const vikinFirebaseService = {
             message.error(
                 'Something went wrong, cannot create ride. Please try again!'
             );
+        }
+    },
+    updateRidesCount: async (
+        collectionName: string,
+        currentStatus: RideStatus | null,
+        updatedStatus: RideStatus
+    ) => {
+        const docRef = doc(
+            db,
+            tables.pageSize,
+            collectionName,
+            'count',
+            'vikin'
+        );
+        try {
+            if (!currentStatus) {
+                await updateDoc(docRef, { count: increment(1) });
+                await updateDoc(docRef, { active: increment(1) });
+            } else {
+                await updateDoc(docRef, { [updatedStatus]: increment(1) });
+                await updateDoc(docRef, { [currentStatus]: increment(-1) });
+            }
+        } catch (error) {
+            console.log(error);
         }
     },
 };

@@ -53,7 +53,7 @@ const tableColumns = [
         dataIndex: 'status',
         key: 'status',
         render: (text: string) => (
-            <Tag color={statusColor[text.toUpperCase() as keyof status]}>
+            <Tag className='capitalize' color={statusColor[text.toUpperCase() as keyof status]}>
                 {text}
             </Tag>
         ),

@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Space, Radio, Row, Col, Badge } from 'antd';
+import {
+    Table,
+    Input,
+    Button,
+    Space,
+    Row,
+    Col,
+    Select,
+    Tag,
+} from 'antd';
 import type {
     FilterDropdownProps,
     ExpandableConfig,
@@ -191,34 +200,37 @@ const DataTable = <T extends Record<string, any>>({
                 <Col xs={20}>
                     {statusFilterOptions.show &&
                         statusFilterOptions.filters.length && (
-                            <Radio.Group
-                                value={statusFilterValue}
-                                onChange={(e) =>
-                                    onStatusFilterChange(e.target.value)
-                                }
-                            >
-                                {statusFilterOptions.filters.map((filter) => (
-                                    <Radio.Button
-                                        key={filter}
-                                        value={filter}
-                                        className='capitalize'
-                                    >
-                                        <Badge
-                                            count={
-                                                counts[
-                                                    filter === 'all'
-                                                        ? 'count'
-                                                        : filter
-                                                ]
-                                            }
-                                        >
-                                            <span className='p-4'>
-                                                {filter}
-                                            </span>
-                                        </Badge>
-                                    </Radio.Button>
-                                ))}
-                            </Radio.Group>
+                            <>
+                                <h3>Filter By Status</h3>
+                                <Select
+                                    defaultValue={
+                                        statusFilterOptions.filters[0]
+                                    }
+                                    onChange={(value) =>
+                                        onStatusFilterChange(value)
+                                    }
+                                    style={{ width: 220 }}
+                                    options={statusFilterOptions.filters.map(
+                                        (filter) => ({
+                                            label: (
+                                                <p className='capitalize'>
+                                                    {filter} -{' '}
+                                                    <Tag color='red'>
+                                                        {
+                                                            counts[
+                                                                filter === 'all'
+                                                                    ? 'count'
+                                                                    : filter
+                                                            ]
+                                                        }
+                                                    </Tag>
+                                                </p>
+                                            ),
+                                            value: filter,
+                                        })
+                                    )}
+                                />
+                            </>
                         )}
                 </Col>
 
