@@ -40,6 +40,7 @@ const Export: React.FC<ExportProps> = ({ data, columns, fileName }) => {
     return (
         <>
             <Dropdown.Button
+                disabled={!data.length}
                 className='flex justify-end'
                 type='primary'
                 menu={{ items, onClick: onMenuClick }}

@@ -20,8 +20,6 @@ const App = () => {
     useEffect(() => {
         setLoading(true);
         auth.onAuthStateChanged(async (_user) => {
-            console.log('here0');
-
             if (_user) {
                 if (user.role) {
                     setUser((prevState) => ({

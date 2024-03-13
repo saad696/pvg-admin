@@ -236,8 +236,6 @@ export const vikinFirebaseService = {
             setLoading(false);
             return { users, lastDoc };
         } catch (error) {
-            console.log(error);
-
             setLoading(false);
             message.error(
                 'Something went wrong, cannot fetch users. Please try again!'
@@ -295,8 +293,6 @@ export const vikinFirebaseService = {
 
             setLoading(false);
         } catch (error) {
-            console.log(error);
-
             setLoading(false);
             message.error(
                 'Something went wrong, action failed. Please try again!'
@@ -325,6 +321,7 @@ export const vikinFirebaseService = {
             }
         } catch (error) {
             console.log(error);
+            
         }
     },
     updateUserStatusCount: async (collectionName: string, status: boolean) => {
@@ -408,11 +405,13 @@ export const vikinFirebaseService = {
         page: number,
         pageSize: number,
         lastDoc: any
-    ): Promise<{ users: Newsletter[]; lastDoc: any, totalDocs: number } | undefined> => {
+    ): Promise<
+        { users: Newsletter[]; lastDoc: any; totalDocs: number } | undefined
+    > => {
         const docRef = collection(db, tables.newsletter);
 
         try {
-            const totalDocs: number = (await getDocs(docRef)).size
+            const totalDocs: number = (await getDocs(docRef)).size;
             let q = query(docRef, orderBy('name'), limit(pageSize));
 
             // If we have a last document, start after it in the next query
@@ -440,6 +439,26 @@ export const vikinFirebaseService = {
             setLoading(false);
             message.error(
                 'Something went wrong, cannot fetch users. Please try again!'
+            );
+        }
+    },
+    getEmails: async (
+        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+        type = tables.vikinUsers
+    ) => {
+        try {
+            const querySnapshot = await getDocs(collection(db, type));
+
+            const emails = querySnapshot.docs.map(
+                (doc) => doc.data().email as string
+            );
+
+            setLoading(false);
+            return emails;
+        } catch (error) {
+            setLoading(false);
+            message.error(
+                'Something went wrong, cannot fetch emails. Please try again!'
             );
         }
     },

@@ -65,6 +65,11 @@ export const sidebarMenus = [
                 ],
             },
             {
+                name: 'Send Emails',
+                path: '/vikin/email',
+                visibility: ['vikin_admin', 'vikin_announcer', 'admin'],
+            },
+            {
                 name: 'Blogs',
                 path: '/vikin/blog',
                 visibility: ['vikin_admin', 'vikin_blog', 'admin'],

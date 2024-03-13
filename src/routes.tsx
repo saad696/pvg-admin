@@ -18,6 +18,7 @@ import {
     RegisteredUsers,
     RegisteredUsersDetails,
     RideDetails,
+    SendEmails,
 } from '.';
 import Login from './auth/Login';
 import ProtectedRoutes from './utils/ProtectedRoutes';
@@ -214,6 +215,15 @@ export const router = createBrowserRouter([
                         element: (
                             <ProtectedRoutes
                                 Component={Announcements}
+                                role={roleAccess.vikin}
+                            />
+                        ),
+                    },
+                    {
+                        path: 'email',
+                        element: (
+                            <ProtectedRoutes
+                                Component={SendEmails}
                                 role={roleAccess.vikin}
                             />
                         ),

@@ -48,17 +48,12 @@ const Login = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log(error);
         message.error(error.message);
       });
   };
 
   useEffect(() => {
-    console.log(user);
-    
     if (user.isLoggedIn) {
-      console.log('here');
-      
       navigate("/");
     }
   }, [user]);

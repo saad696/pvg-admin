@@ -16,6 +16,7 @@ export { default as RegisteredUsers } from "./pages/RegisteredUsers";
 export { default as RegisteredUsersDetails } from "./pages/RegisteredUsersDetails";
 export { default as Newsletter } from "./pages/Newsletter";
 export { default as RideDetails } from "./pages/RideDetails";
+export { default as SendEmails } from "./pages/SendEmails";
 
 /* auth */
 export { default as Login } from "./auth/Login";

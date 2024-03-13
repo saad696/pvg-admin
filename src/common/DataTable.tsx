@@ -202,8 +202,6 @@ const DataTable = <T extends Record<string, any>>({
     };
 
     const onColumnsChange: CheckboxProps['onChange'] = (e) => {
-        console.log(`${e.target.value} = ${e.target.checked}`);
-
         const value = e.target.value;
         const isChecked = e.target.checked;
 

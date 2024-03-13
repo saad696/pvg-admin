@@ -69,9 +69,6 @@ const HostRides = () => {
             updatedBy: user.user.uid,
         };
 
-        console.log('updated status: ', values.status);
-        console.log('current status: ', rideData?.status);
-
         await vikinFirebaseService.updateRidesCount(
             tables.rides,
             rideData?.status || null,

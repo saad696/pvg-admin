@@ -28,13 +28,13 @@ const tableColumns = [
         title: 'Subscribed At',
         dataIndex: 'joined_at',
         key: 'joined_at',
-        render: (text: Date) =>
+        render: (text: string) =>
             text ? (
                 <p>
                     {helperService.formatTime(
                         false,
                         dateTimeFormats.default,
-                        text.toString()
+                        JSON.parse(text)
                     )}
                 </p>
             ) : (
