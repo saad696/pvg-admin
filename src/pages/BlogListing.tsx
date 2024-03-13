@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { BlogFilters, BlogListCard, PageHeader } from '..';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { firebaseService } from '../firebase/firebaseService';
+import { firebaseService } from '../services/firebase/firebaseService';
 import { Empty, Tabs, message, Row, Col } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 import { LoadingContext } from '../context/LoadingContext';

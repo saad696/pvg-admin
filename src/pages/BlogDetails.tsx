@@ -12,7 +12,7 @@ import {
   message,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 import { LoadingContext } from "../context/LoadingContext";
 import moment from "moment";
 import { dateTimeFormats, status, tables, tagsColor } from "../utils/constants";

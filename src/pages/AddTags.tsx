@@ -22,7 +22,7 @@ type FieldType = {
 
 import { PageTitle, TagsList } from "..";
 import { helperService } from "../utils/helper";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 
 const AddTags = () => {
   const { loading, setLoading } = useContext(LoadingContext);

@@ -3,7 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload, message, Image, Button } from "antd";
 import type { GetProp, UploadFile, UploadProps } from "antd";
 import { imageTypes } from "../utils/constants";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 import ImgCrop from "antd-img-crop";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];

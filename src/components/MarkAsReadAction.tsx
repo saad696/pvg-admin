@@ -4,7 +4,7 @@ import { Button, Tooltip } from 'antd';
 import { DeliveredProcedureOutlined } from '@ant-design/icons';
 import { LoadingContext } from '../context/LoadingContext';
 import { useLocation } from 'react-router-dom';
-import { firebaseService } from '../firebase/firebaseService';
+import { firebaseService } from '../services/firebase/firebaseService';
 
 interface MarkAsReadProps {
     data: IContact;

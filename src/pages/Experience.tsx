@@ -15,7 +15,7 @@ import { experienceFormOptions, skills, status } from "../utils/constants";
 import { LoadingContext } from "../context/LoadingContext";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 import { useLocation, useParams } from "react-router-dom";
 
 type FieldType = {

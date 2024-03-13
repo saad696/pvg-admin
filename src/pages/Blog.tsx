@@ -6,8 +6,7 @@ import { Editor, UploadFile, PageHeader } from "..";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { LoadingContext } from "../context/LoadingContext";
 import { UserContext } from "../context/UserContext";
-import { firebaseService } from "../firebase/firebaseService";
-// @ts-ignore
+import { firebaseService } from "../services/firebase/firebaseService";
 import { v4 as uuidv4 } from "uuid";
 import { status } from "../utils/constants";
 

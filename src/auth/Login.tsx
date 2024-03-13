@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Row, Col, Form, Input, Button, Card, message } from "antd";
-import { auth, db } from "../firebase/firebase";
+import { auth, db } from "../services/firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";

@@ -1,19 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DataTable, ViewAction } from '..';
-import { vikinFirebaseService } from '../firebase/vikinFirebaseService';
+import { vikinFirebaseService } from '../services/firebase/vikinFirebaseService';
 import { LoadingContext } from '../context/LoadingContext';
-import { firebaseService } from '../firebase/firebaseService';
+import { firebaseService } from '../services/firebase/firebaseService';
+import { Badge, Tag } from 'antd';
+import { helperService } from '../utils/helper';
+import { dateTimeFormats } from '../utils/constants';
 
 interface UsersTablePropsWithRide {
     getByRide: true;
-    showFilters: boolean;
+    showFilters?: boolean;
     ridersId: string[];
+    showExport?: boolean;
+    showColumnsToggler?: boolean;
 }
 
 interface UsersTablePropsWithoutRide {
     getByRide: false;
-    showFilters: boolean;
+    showFilters?: boolean;
     ridersId?: string[];
+    showExport?: boolean;
+    showColumnsToggler?: boolean;
 }
 
 const tableColumns = [
@@ -35,6 +42,57 @@ const tableColumns = [
         key: 'mobile',
     },
     {
+        title: 'Emergency Number',
+        dataIndex: 'emergency_number',
+        key: 'emergency_number',
+        hidden: true,
+    },
+    {
+        title: 'Date Of Birth',
+        dataIndex: 'dob',
+        key: 'dob',
+        render: (text: any) => (
+            <p>
+                {helperService.formatTime(false, dateTimeFormats.default, text)}
+            </p>
+        ),
+        hidden: true,
+    },
+    {
+        title: 'Blood Group',
+        dataIndex: 'blood_group',
+        key: 'blood_group',
+        hidden: true,
+    },
+    {
+        title: 'Joined At',
+        dataIndex: 'joined_at',
+        key: 'joined_at',
+        hidden: true,
+    },
+    {
+        title: 'Account Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: (status: boolean) => (
+            <Tag color={status ? 'success' : 'red'}>
+                {status ? 'Active' : 'Deactivated'}
+            </Tag>
+        ),
+        hidden: true,
+    },
+    {
+        title: 'Session Status',
+        key: 'session_status',
+        hidden: true,
+        render: (_: any, record: IVikinRider) => (
+            <Tag className='bg-transparent'>
+                <Badge color={record.is_active ? 'green' : '#ccc'} />{' '}
+                {record.is_active ? 'Online' : 'Offline'}
+            </Tag>
+        ),
+    },
+    {
         title: 'Actions',
         key: 'action',
         render: (_: any, record: IVikinRider) => (
@@ -45,7 +103,13 @@ const tableColumns = [
 
 const UsersTable: React.FC<
     UsersTablePropsWithRide | UsersTablePropsWithoutRide
-> = ({ getByRide, showFilters, ridersId }) => {
+> = ({
+    getByRide,
+    ridersId,
+    showFilters = true,
+    showExport = true,
+    showColumnsToggler = true,
+}) => {
     const { setLoading } = useContext(LoadingContext);
 
     const [lastDoc, setLastDoc] = useState<IVikinRider | null>(null);
@@ -88,7 +152,14 @@ const UsersTable: React.FC<
 
             if (data) {
                 setLastDoc(data.lastDoc);
-                return data.users;
+                return data.users.map((x) => ({
+                    ...x,
+                    joined_at: helperService.formatTime(
+                        true,
+                        dateTimeFormats.default,
+                        x.joined_at
+                    ),
+                }));
             } else {
                 // Handle the case when result is undefined
                 return [];
@@ -104,7 +175,6 @@ const UsersTable: React.FC<
 
         if (count) {
             setTotalDocsCount({ ...count });
-
             setPageSize(count.count);
         }
     };
@@ -118,12 +188,13 @@ const UsersTable: React.FC<
             fetchData={getRiders}
             columns={tableColumns}
             totalDocs={pageSize}
+            showColumnsToggler={showColumnsToggler}
             searchableColumns={['name']}
             expandableOptions={{
                 expandedRowRender: () => <></>,
                 rowExpandable: () => false,
             }}
-            exportOptions={{ show: false, file_name: '' }}
+            exportOptions={{ show: showExport, file_name: 'vikin_users_data' }}
             statusFilterOptions={{
                 defaultFilter: 'all',
                 filters: ['all', 'active', 'deactivated'],

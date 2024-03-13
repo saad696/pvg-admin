@@ -102,17 +102,19 @@ interface IContact {
 interface IVikinRider {
     name: string;
     mobile: string;
+    emergency_number: string;
     email: string;
     bio: string;
     profile_picture: any;
-    bikes: string[];
-    joinedAt: string | Date;
+    bikes: { name: string; pet_name: string }[];
+    joined_at: string | Date;
     is_active: boolean;
     user_id: string;
-    socials: { [key: string]: string }[];
+    socials: { [key: string]: string };
     blood_group: string;
     rides_joined: { joined_at: any; ride_id: string }[];
-    status: 'Active' | 'Deactivated';
+    status: boolean;
+    last_login: string | Date;
 }
 
 interface IHostRideForm {
@@ -123,7 +125,7 @@ interface IHostRideForm {
     thumbnail: string;
     average_kilometers: number;
     is_published: boolean;
-    status?: RideStatus
+    status?: RideStatus;
 }
 
 interface IHostRide extends IHostRideForm {
@@ -163,6 +165,20 @@ interface status {
     DELETED: string;
     COMPLETED: string;
     ONGOING: string;
+}
+
+interface Announcement {
+    title: string;
+    message: string;
+    announced_at: string;
+    announcement_id: string;
+    announcement_by: string;
+}
+
+interface Newsletter {
+    name: string;
+    email: string;
+    mobile: string;
 }
 
 type RideStatus =

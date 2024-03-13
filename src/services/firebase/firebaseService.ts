@@ -19,7 +19,7 @@ import {
 } from "firebase/firestore";
 import { message } from "antd";
 import { User as FirebaseUser } from "firebase/auth";
-import { status, tables } from "../utils/constants";
+import { status, tables } from "../../utils/constants";
 import {
   getStorage,
   ref,

@@ -33,6 +33,8 @@ export { default as UploadFile } from "./common/UploadFiles";
 export { default as PageHeader } from "./common/PageHeader";
 export { default as Export } from "./common/Export";
 export { default as DataTable } from "./common/DataTable";
+export { default as UsersTable } from "./common/UsersTable";
+export { default as RidesTable } from "./common/RidesTable";
 export { default as ViewAction } from "./common/ViewAction";
 
 /* components */
@@ -42,3 +44,4 @@ export { default as BlogListCardActions } from "./components/blog/BlogListCardAc
 export { default as BlogFilters } from "./components/blog/BlogFilters";
 export { default as ExperienceCard } from "./components/ExperienceCard";
 export { default as MarkAsReadAction } from "./components/MarkAsReadAction";
+export { default as AnnouncementsList } from "./components/AnnouncementsList";

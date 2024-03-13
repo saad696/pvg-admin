@@ -1,12 +1,11 @@
 import React from 'react';
-import { PageTitle } from '..';
-import UsersTable from '../common/UsersTable';
+import { PageTitle, UsersTable } from '..';
 
 const RegisteredUsers = () => {
     return (
         <>
             <PageTitle title='vikin - Registered users' />
-            <UsersTable getByRide={false} showFilters={true} />
+            <UsersTable getByRide={false} />
         </>
     );
 };

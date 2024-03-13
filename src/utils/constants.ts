@@ -141,6 +141,7 @@ export const regexp = {
 
 export const dateTimeFormats = {
     default: 'MMMM Do YYYY',
+    default_with_time: 'MMMM Do YYYY (h:mm:ss a)',
     month_year: 'MMMM YYYY',
 };
 
@@ -156,6 +157,8 @@ export const tables = {
     pageSize: 'pageSizes',
     rides: 'rides',
     vikinUsers: 'vikin_users',
+    announcements: 'announcements',
+    newsletter: 'newsletter',
 };
 
 export const imageTypes = {
@@ -189,7 +192,13 @@ export const statusColor = {
     ONGOING: 'processing',
 };
 
-export const rideStatuses = ['Active', 'Inactive', 'Ongoing', 'Completed', 'Deleted'];
+export const rideStatuses = [
+    'Active',
+    'Inactive',
+    'Ongoing',
+    'Completed',
+    'Deleted',
+];
 
 export const experienceFormOptions = {
     employment_type: ['Part Time', 'Full Time', 'Freelance'],

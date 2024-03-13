@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LoadingContext } from '../context/LoadingContext';
-import { vikinFirebaseService } from '../firebase/vikinFirebaseService';
-import { PageHeader } from '..';
+import { vikinFirebaseService } from '../services/firebase/vikinFirebaseService';
+import { PageHeader, UsersTable } from '..';
 import parse from 'html-react-parser';
 import { Collapse, Image, Tag } from 'antd';
 import { dateTimeFormats, tagsColor } from '../utils/constants';
 import { helperService } from '../utils/helper';
 import { EditOutlined, ExportOutlined } from '@ant-design/icons';
-import UsersTable from '../common/UsersTable';
 
 const RideDetails = () => {
     const { id } = useParams();
@@ -57,7 +56,7 @@ const RideDetails = () => {
                     alt={rideDetails.title + 'image'}
                 />
                 <div className='my-6 p-4 rounded-md shadow bg-slate-200 font-bold '>
-                    <Tag color={randomTagColor()}>
+                    <Tag color={randomTagColor()} className='!block lg:!inline'>
                         Ride Date:{' '}
                         {helperService.formatTime(
                             false,
@@ -65,17 +64,20 @@ const RideDetails = () => {
                             new Date(JSON.parse(rideDetails.start_date))
                         )}
                     </Tag>
-                    <Tag color={randomTagColor()}>
+                    <Tag color={randomTagColor()} className='!block lg:!inline'>
                         Average Kilometers: {rideDetails.average_kilometers}
                     </Tag>
-                    <Tag color={randomTagColor()}>
+                    <Tag color={randomTagColor()} className='!block lg:!inline'>
                         Status: {rideDetails.status}
                     </Tag>
-                    <Tag color={randomTagColor()}>
+                    <Tag color={randomTagColor()} className='!block lg:!inline'>
                         Published: {rideDetails.is_published ? 'Yes' : 'No'}
                     </Tag>
                     <a href={rideDetails.route} target='_blank'>
-                        <Tag color={randomTagColor()}>
+                        <Tag
+                            color={randomTagColor()}
+                            className='!block lg:!inline'
+                        >
                             View Route: <ExportOutlined />
                         </Tag>
                     </a>
@@ -89,14 +91,20 @@ const RideDetails = () => {
                         items={[
                             {
                                 key: '1',
-                                label: <h1>View Registered Riders</h1>,
+                                label: (
+                                    <h1 className='text-xl md:text-3xl'>
+                                        View Registered Riders
+                                    </h1>
+                                ),
                                 children: (
                                     <UsersTable
+                                        showColumnsToggler={false}
                                         getByRide={true}
                                         ridersId={rideDetails.users_joined.map(
                                             (user) => user.user_id
                                         )}
                                         showFilters={false}
+                                        showExport={false}
                                     />
                                 ),
                             },

@@ -23,7 +23,7 @@ import { regexp, rideStatuses, status, tables } from '../utils/constants';
 import { LoadingContext } from '../context/LoadingContext';
 import { v4 as uuidv4 } from 'uuid';
 import { UserContext } from '../context/UserContext';
-import { vikinFirebaseService } from '../firebase/vikinFirebaseService';
+import { vikinFirebaseService } from '../services/firebase/vikinFirebaseService';
 import dayjs from 'dayjs';
 
 type FieldType = {
@@ -48,6 +48,7 @@ const HostRides = () => {
 
     const [editorValue, setEditorValue] = useState<string>('');
     const [rideData, setRideData] = useState<IHostRide | null>(null);
+    const [isCompleted, setIsCompleted] = useState(false);
     // const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
     const onSubmit = async (values: IHostRideForm) => {
@@ -111,6 +112,14 @@ const HostRides = () => {
 
     useEffect(() => {
         if (rideId) {
+            setIsCompleted(rideData?.status === 'completed');
+        } else {
+            setIsCompleted(false);
+        }
+    }, [rideData, rideId]);
+
+    useEffect(() => {
+        if (rideId) {
             fetchRideAndSetForm();
         } else {
             hostRideForm.resetFields();
@@ -120,7 +129,7 @@ const HostRides = () => {
 
     return (
         <>
-            {rideData?.status === 'completed' && (
+            {isCompleted && (
                 <div className='mt-8'>
                     <Alert
                         className='font-semibold !text-green-500'
@@ -161,7 +170,7 @@ const HostRides = () => {
                 autoComplete='off'
                 layout='vertical'
                 form={hostRideForm}
-                disabled={rideData?.status === 'completed'}
+                disabled={isCompleted}
             >
                 <Row gutter={[16, 16]}>
                     <Col xs={24} md={6} lg={8}>
@@ -302,9 +311,7 @@ const HostRides = () => {
                                 htmlType='submit'
                                 className='w-full'
                                 loading={loading}
-                                disabled={
-                                    loading || rideData?.status === 'completed'
-                                }
+                                disabled={loading || isCompleted}
                             >
                                 Submit
                             </Button>

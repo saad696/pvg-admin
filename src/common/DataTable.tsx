@@ -8,16 +8,25 @@ import {
     Col,
     Select,
     Tag,
+    Dropdown,
+    MenuProps,
+    Checkbox,
+    CheckboxProps,
 } from 'antd';
 import type {
     FilterDropdownProps,
     ExpandableConfig,
 } from 'antd/es/table/interface';
-import { SearchOutlined } from '@ant-design/icons';
+import {
+    EllipsisOutlined,
+    SearchOutlined,
+    SettingOutlined,
+} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import { Export } from '..';
 
 type ColumnsType<T> = {
+    hidden: any;
     title: string;
     dataIndex: string;
     key: string;
@@ -35,6 +44,7 @@ interface DataTableProps<T> {
     expandableOptions: ExpandableConfig<T>;
     exportOptions: { show: boolean; file_name: string };
     totalDocs: number;
+    showColumnsToggler?: boolean;
     counts: { [key: string]: number };
     statusFilterOptions: {
         show: boolean;
@@ -53,6 +63,7 @@ const DataTable = <T extends Record<string, any>>({
     statusFilterOptions,
     totalDocs,
     counts,
+    showColumnsToggler = true,
 }: DataTableProps<T>) => {
     const [statusFilterValue, setStatusFilterValue] = useState<string>(
         statusFilterOptions.defaultFilter || ''
@@ -65,6 +76,9 @@ const DataTable = <T extends Record<string, any>>({
     const [searchedColumn, setSearchedColumn] = useState('');
     const [tableKey, setTableKey] = useState(Math.random());
     const searchInput = useRef<any>(null);
+    const [checkedList, setCheckedList] = useState<string[]>([]);
+    const [openColumnDropdown, setOpenColumnDropdown] =
+        useState<boolean>(false);
 
     const fetch = async () => {
         setLoading(true);
@@ -174,17 +188,43 @@ const DataTable = <T extends Record<string, any>>({
             ),
     });
 
-    const newColumns = columns.map((col: any) => ({
+    const newColumns: ColumnsType<T> = columns.map((col: any) => ({
         ...col,
         ...(searchableColumns.includes(col.dataIndex)
             ? getColumnSearchProps(col.dataIndex)
             : {}),
+        hidden: !checkedList.includes(col.key as string),
     }));
 
     const onStatusFilterChange = (filterValue: string) => {
         setStatusFilterValue(filterValue);
         statusFilterOptions.onFilterChange(filterValue);
     };
+
+    const onColumnsChange: CheckboxProps['onChange'] = (e) => {
+        console.log(`${e.target.value} = ${e.target.checked}`);
+
+        const value = e.target.value;
+        const isChecked = e.target.checked;
+
+        setCheckedList((prevState) => {
+            if (!isChecked) {
+                return prevState.filter((x) => x !== value);
+            } else {
+                return [...prevState, value];
+            }
+        });
+    };
+
+    useEffect(() => {
+        setCheckedList(
+            (
+                columns.map((item: any) =>
+                    !item.hidden ? item.key : null
+                ) as []
+            ).filter((item) => item)
+        );
+    }, [columns]);
 
     useEffect(() => {
         fetch();
@@ -196,8 +236,8 @@ const DataTable = <T extends Record<string, any>>({
 
     return (
         <>
-            <Row className='mb-4'>
-                <Col xs={20}>
+            <Row className='mb-4' align={'bottom'} gutter={[16, 16]}>
+                <Col lg={exportOptions.show && showColumnsToggler ? 15 : 19}>
                     {statusFilterOptions.show &&
                         statusFilterOptions.filters.length && (
                             <>
@@ -216,13 +256,11 @@ const DataTable = <T extends Record<string, any>>({
                                                 <p className='capitalize'>
                                                     {filter} -{' '}
                                                     <Tag color='red'>
-                                                        {
-                                                            counts[
-                                                                filter === 'all'
-                                                                    ? 'count'
-                                                                    : filter
-                                                            ]
-                                                        }
+                                                        {counts[
+                                                            filter === 'all'
+                                                                ? 'count'
+                                                                : filter
+                                                        ] || 0}
                                                     </Tag>
                                                 </p>
                                             ),
@@ -233,9 +271,43 @@ const DataTable = <T extends Record<string, any>>({
                             </>
                         )}
                 </Col>
-
+                {showColumnsToggler && (
+                    <Col lg={5} className='flex justify-end'>
+                        <Dropdown.Button
+                            open={openColumnDropdown}
+                            icon={
+                                <EllipsisOutlined
+                                    onClick={() => {
+                                        setOpenColumnDropdown(
+                                            (prevState) => !prevState
+                                        );
+                                    }}
+                                />
+                            }
+                            menu={{
+                                items: newColumns.map((col) => ({
+                                    label: (
+                                        <Checkbox
+                                            disabled={col.key === 'action'}
+                                            checked={!col.hidden}
+                                            value={col.key}
+                                            onChange={onColumnsChange}
+                                        >
+                                            {col.title}
+                                        </Checkbox>
+                                    ),
+                                    key: col.key,
+                                })) as MenuProps['items'],
+                            }}
+                            trigger={['click']}
+                        >
+                            Manage Columns
+                            <SettingOutlined />
+                        </Dropdown.Button>
+                    </Col>
+                )}
                 {exportOptions.show && (
-                    <Col xs={4} className='flex justify-end'>
+                    <Col lg={4} className='flex justify-end'>
                         <Export
                             data={data}
                             columns={columns}

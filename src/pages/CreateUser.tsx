@@ -4,7 +4,7 @@ import { Row, Col, Form, Input, Select, Button, message } from "antd";
 import { LoadingContext } from "../context/LoadingContext";
 import { roles, subRoles } from "../utils/constants";
 import { PageTitle } from "..";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 
 type FieldType = {
   email: string;

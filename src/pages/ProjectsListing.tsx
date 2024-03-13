@@ -18,7 +18,7 @@ import {
 import { LinkOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import parse from "html-react-parser";
 import { LoadingContext } from "../context/LoadingContext";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { PageTitle } from "..";

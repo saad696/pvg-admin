@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { firebaseService } from "../firebase/firebaseService";
+import { firebaseService } from "../services/firebase/firebaseService";
 import { Empty, Tabs } from "antd";
 import { LoadingContext } from "../context/LoadingContext";
 import { ExperienceCard, PageTitle } from "..";

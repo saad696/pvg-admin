@@ -1,4 +1,4 @@
-import { auth } from '../firebase/firebase';
+import { auth } from '../services/firebase/firebase';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { utils, writeFile } from 'xlsx';
@@ -46,11 +46,47 @@ export const helperService = {
     formatTime: (
         isTimestamp: boolean,
         format: string,
-        date: Date | Timestamp
+        date: Date | Timestamp | string
     ): string => {
         return isTimestamp
             ? moment((date as Timestamp).toDate()).format(format)
             : moment(date).format(format);
+    },
+    generateRandomColors: (
+        numColors: number
+    ): { [key: string]: { backgroundColor: string; color: string } } => {
+        const colors: any = {};
+
+        for (let i = 0; i < numColors; i++) {
+            const bgColor =
+                '#' + Math.floor(Math.random() * 16777215).toString(16);
+            const textColor = helperService.getContrastColor(bgColor);
+
+            colors[`colorPair${i + 1}`] = {
+                backgroundColor: bgColor,
+                color: textColor,
+            };
+        }
+
+        return colors;
+    },
+
+    getContrastColor: (hexColor: string) => {
+        // If the passed color is not in hex format, return default color
+        if (!/^#([A-Fa-f0-9]{3}){1,2}$/.test(hexColor)) {
+            return '#000000';
+        }
+
+        // Convert hex color to RGB
+        const r = parseInt(hexColor.substring(1, 3), 16);
+        const g = parseInt(hexColor.substring(3, 5), 16);
+        const b = parseInt(hexColor.substring(5, 7), 16);
+
+        // Calculate the brightness of the color
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+        // Return black for bright colors and white for dark colors
+        return brightness > 128 ? '#000000' : '#FFFFFF';
     },
     exportPDF: (
         data: DataType[],
