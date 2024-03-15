@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AnnouncementsList, PageTitle } from '..';
 import { Button, Col, Divider, Form, Input, Row } from 'antd';
 import TextArea from 'antd/es/input/TextArea';

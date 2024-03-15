@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { emailService } from '../services/elasticEmailService';
 import { LoadingContext } from '../context/LoadingContext';
 import parse from 'html-react-parser';

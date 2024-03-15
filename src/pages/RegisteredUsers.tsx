@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageTitle, UsersTable } from '..';
 
 const RegisteredUsers = () => {
