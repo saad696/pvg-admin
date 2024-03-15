@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { DataTable, EmailStatsFilters, PageTitle } from '..';
 import { vikinFirebaseService } from '../services/firebase/vikinFirebaseService';
 import { LoadingContext } from '../context/LoadingContext';
