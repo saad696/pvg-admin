@@ -9,6 +9,8 @@ import { Timestamp } from 'firebase/firestore';
 import { helperService } from '../utils/helper';
 import { useParams } from 'react-router-dom';
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
+import moment from 'moment';
 
 interface RideTablePropsWithRide {
     getByUser: true;
@@ -44,6 +46,12 @@ const initialColumns: ColumnsType<IHostRide> = [
         title: 'Created At',
         dataIndex: 'createdAt',
         key: 'createdAt',
+        sorter: (a: IHostRide, b: IHostRide) => {
+            
+            return (
+                moment(a.createdAt, dateTimeFormats.default).unix() - moment(b.createdAt, dateTimeFormats.default).unix()
+            );
+        },
         render: (date: Timestamp) =>
             helperService.formatTime(true, dateTimeFormats.default, date),
     },
@@ -51,6 +59,12 @@ const initialColumns: ColumnsType<IHostRide> = [
         title: 'Start Date',
         dataIndex: 'start_date',
         key: 'start_date',
+        sorter: (a: IHostRide, b: IHostRide) => {
+            return (
+                dayjs(JSON.parse(a.start_date)).unix() -
+                dayjs(JSON.parse(b.start_date)).unix()
+            );
+        },
         render: (date: string) => {
             return helperService.formatTime(
                 false,

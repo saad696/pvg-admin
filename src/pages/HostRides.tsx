@@ -17,7 +17,7 @@ import {
     PlusOutlined,
     InfoCircleOutlined,
 } from '@ant-design/icons';
-import { Editor, PageHeader } from '..';
+import { Editor, PageHeader, PostRide } from '..';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { regexp, rideStatuses, status, tables } from '../utils/constants';
 import { LoadingContext } from '../context/LoadingContext';
@@ -67,6 +67,7 @@ const HostRides = () => {
             createdBy: rideData?.createdBy ? rideData.createdBy : user.user.uid,
             updatedAt: new Date(),
             updatedBy: user.user.uid,
+            images: [],
         };
 
         await vikinFirebaseService.updateRidesCount(
@@ -129,15 +130,23 @@ const HostRides = () => {
             {isCompleted && (
                 <div className='mt-8'>
                     <Alert
-                        className='font-semibold !text-green-500'
                         type='success'
-                        message='Ride has been successfully completed!'
+                        message={
+                            <small>
+                                Great job on completing the ride! This screen is
+                                designed for you, as an admin, to upload images
+                                from the ride. You can upload a maximum of 6
+                                images per ride. This will allow you to share
+                                the highlights of the journey with your
+                                community. 🏍️📸
+                            </small>
+                        }
                     />
                 </div>
             )}
             <PageHeader
                 title={`${location.pathname.split('/')[1]} - ${
-                    rideId ? 'Update' : 'Host'
+                    isCompleted ? 'Post' : rideId ? 'Update' : 'Host'
                 } Ride`}
                 actions={[
                     {
@@ -160,121 +169,117 @@ const HostRides = () => {
                     // },
                 ]}
             />
-
-            <Form
-                name='create-user'
-                onFinish={onSubmit}
-                autoComplete='off'
-                layout='vertical'
-                form={hostRideForm}
-                disabled={isCompleted}
-            >
-                <Row gutter={[16, 16]}>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Title'
-                            name='title'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                            ]}
-                        >
-                            <Input allowClear />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Thumbnail'
-                            name='thumbnail'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                                {
-                                    pattern: regexp.url,
-                                    message: 'Please enter a valid url',
-                                },
-                            ]}
-                        >
-                            <Input
-                                suffix={
-                                    <Tooltip title='Enter image URL.'>
-                                        <InfoCircleOutlined className='text-gray-500' />
-                                    </Tooltip>
-                                }
-                                allowClear
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Start Date'
-                            name='start_date'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                            ]}
-                        >
-                            <DatePicker className='w-full' allowClear />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Ride Route'
-                            name='route'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                                {
-                                    pattern: regexp.url,
-                                    message: 'Please enter a valid url',
-                                },
-                            ]}
-                        >
-                            <Input
-                                allowClear
-                                suffix={
-                                    <Tooltip title='Enter google maps link with all the stops in the journey route.'>
-                                        <InfoCircleOutlined className='text-gray-500' />
-                                    </Tooltip>
-                                }
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Average Kilometers'
-                            name='average_kilometers'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                            ]}
-                        >
-                            <InputNumber className='!w-full' />
-                        </Form.Item>
-                    </Col>
-                    <Col xs={24} md={6} lg={8}>
-                        <Form.Item<FieldType>
-                            label='Publish Ride'
-                            name='is_published'
-                            rules={[
-                                { required: true, message: 'Required field' },
-                            ]}
-                            initialValue={false}
-                        >
-                            <Select
-                                allowClear
-                                style={{ width: '100%' }}
-                                placeholder='Please select'
-                                options={[
-                                    { label: 'Yes', value: true },
-                                    { label: 'No', value: false },
-                                ]}
-                            />
-                        </Form.Item>
-                    </Col>
-                    {rideId && (
+            {isCompleted ? (
+                <PostRide rideTitle={rideData?.title || ''} />
+            ) : (
+                <Form
+                    name='create-user'
+                    onFinish={onSubmit}
+                    autoComplete='off'
+                    layout='vertical'
+                    form={hostRideForm}
+                    disabled={isCompleted}
+                >
+                    <Row gutter={[16, 16]}>
                         <Col xs={24} md={6} lg={8}>
                             <Form.Item<FieldType>
-                                label='Update Status'
-                                name='status'
+                                label='Title'
+                                name='title'
                                 rules={[
                                     {
-                                        required: !!rideId,
+                                        required: true,
+                                        message: 'Required field',
+                                    },
+                                ]}
+                            >
+                                <Input allowClear />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={6} lg={8}>
+                            <Form.Item<FieldType>
+                                label='Thumbnail'
+                                name='thumbnail'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Required field',
+                                    },
+                                    {
+                                        pattern: regexp.url,
+                                        message: 'Please enter a valid url',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    suffix={
+                                        <Tooltip title='Enter image URL.'>
+                                            <InfoCircleOutlined className='text-gray-500' />
+                                        </Tooltip>
+                                    }
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={6} lg={8}>
+                            <Form.Item<FieldType>
+                                label='Start Date'
+                                name='start_date'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Required field',
+                                    },
+                                ]}
+                            >
+                                <DatePicker className='w-full' allowClear />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={6} lg={8}>
+                            <Form.Item<FieldType>
+                                label='Ride Route'
+                                name='route'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Required field',
+                                    },
+                                    {
+                                        pattern: regexp.url,
+                                        message: 'Please enter a valid url',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    allowClear
+                                    suffix={
+                                        <Tooltip title='Enter google maps link with all the stops in the journey route.'>
+                                            <InfoCircleOutlined className='text-gray-500' />
+                                        </Tooltip>
+                                    }
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={6} lg={8}>
+                            <Form.Item<FieldType>
+                                label='Average Kilometers'
+                                name='average_kilometers'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Required field',
+                                    },
+                                ]}
+                            >
+                                <InputNumber className='!w-full' />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={6} lg={8}>
+                            <Form.Item<FieldType>
+                                label='Publish Ride'
+                                name='is_published'
+                                rules={[
+                                    {
+                                        required: true,
                                         message: 'Required field',
                                     },
                                 ]}
@@ -284,39 +289,63 @@ const HostRides = () => {
                                     allowClear
                                     style={{ width: '100%' }}
                                     placeholder='Please select'
-                                    options={rideStatuses.map((status) => ({
-                                        label: status,
-                                        value: status.toLowerCase(),
-                                    }))}
+                                    options={[
+                                        { label: 'Yes', value: true },
+                                        { label: 'No', value: false },
+                                    ]}
                                 />
                             </Form.Item>
                         </Col>
-                    )}
-                    <Col xs={24}>
-                        <Form.Item label='Ride Description' required>
-                            <Editor
-                                getValue={setEditorValue}
-                                value={editorValue}
-                            />
-                        </Form.Item>
-                    </Col>
+                        {rideId && (
+                            <Col xs={24} md={6} lg={8}>
+                                <Form.Item<FieldType>
+                                    label='Update Status'
+                                    name='status'
+                                    rules={[
+                                        {
+                                            required: !!rideId,
+                                            message: 'Required field',
+                                        },
+                                    ]}
+                                    initialValue={false}
+                                >
+                                    <Select
+                                        allowClear
+                                        style={{ width: '100%' }}
+                                        placeholder='Please select'
+                                        options={rideStatuses.map((status) => ({
+                                            label: status,
+                                            value: status.toLowerCase(),
+                                        }))}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        )}
+                        <Col xs={24}>
+                            <Form.Item label='Ride Description' required>
+                                <Editor
+                                    getValue={setEditorValue}
+                                    value={editorValue}
+                                />
+                            </Form.Item>
+                        </Col>
 
-                    <Col xs={24}>
-                        <Form.Item>
-                            <Button
-                                type='primary'
-                                htmlType='submit'
-                                className='w-full'
-                                loading={loading}
-                                disabled={loading || isCompleted}
-                            >
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </Form>
-
+                        <Col xs={24}>
+                            <Form.Item>
+                                <Button
+                                    type='primary'
+                                    htmlType='submit'
+                                    className='w-full'
+                                    loading={loading}
+                                    disabled={loading || isCompleted}
+                                >
+                                    Submit
+                                </Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
             {/* users drawer */}
             {/* <Drawer
                 title='Joined Riders List'

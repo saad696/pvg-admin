@@ -19,7 +19,12 @@ import {
     deleteDoc,
 } from 'firebase/firestore';
 import { message } from 'antd';
-import { tables } from '../../utils/constants';
+import { tables, vikinEmailTypes } from '../../utils/constants';
+import {
+    EmailMessageData,
+    EmailSend,
+} from '@elasticemail/elasticemail-client-ts-axios';
+import { emailService } from '../elasticEmailService';
 
 export const vikinFirebaseService = {
     hostRide: async (
@@ -34,6 +39,35 @@ export const vikinFirebaseService = {
                 await updateDoc(docRef, { ...payload });
             } else {
                 await setDoc(docRef, { ...payload });
+            }
+            const template = await emailService.getEmailTemplates(
+                setLoading,
+                vikinEmailTypes.ride
+            );
+            const usersEmail = await vikinFirebaseService.getEmails(setLoading);
+
+            if (template?.length && usersEmail?.length) {
+                const emailMessageData: EmailMessageData = {
+                    Recipients: usersEmail.map((email) => ({ Email: email })),
+                    Content: {
+                        Body: [
+                            {
+                                ContentType: 'HTML',
+                                Charset: 'utf-8',
+                                Content: template[0].Content,
+                            },
+                        ],
+                        EnvelopeFrom: 'Vikin <info@vikin.club>',
+                        From: 'Vikin <info@vikin.club>',
+                        Subject: 'New Ride Live!',
+                    },
+                };
+                await emailService.sendBulkMail(
+                    setLoading,
+                    emailMessageData,
+                    vikinEmailTypes.ride,
+                    payload.createdBy
+                );
             }
             setLoading(false);
             message.success(
@@ -320,8 +354,7 @@ export const vikinFirebaseService = {
                 await updateDoc(docRef, { [currentStatus]: increment(-1) });
             }
         } catch (error) {
-            console.log(error);
-            
+            console.error(error);
         }
     },
     updateUserStatusCount: async (collectionName: string, status: boolean) => {
@@ -353,6 +386,35 @@ export const vikinFirebaseService = {
 
         try {
             await setDoc(docRef, { ...payload });
+            const template = await emailService.getEmailTemplates(
+                setLoading,
+                vikinEmailTypes.announcement
+            );
+            const usersEmail = await vikinFirebaseService.getEmails(setLoading);
+
+            if (template?.length && usersEmail?.length) {
+                const emailMessageData: EmailMessageData = {
+                    Recipients: usersEmail.map((email) => ({ Email: email })),
+                    Content: {
+                        Body: [
+                            {
+                                ContentType: 'HTML',
+                                Charset: 'utf-8',
+                                Content: template[0].Content,
+                            },
+                        ],
+                        EnvelopeFrom: 'Vikin <info@vikin.club>',
+                        From: 'Vikin <info@vikin.club>',
+                        Subject: 'New Announcement!',
+                    },
+                };
+                await emailService.sendBulkMail(
+                    setLoading,
+                    emailMessageData,
+                    vikinEmailTypes.announcement,
+                    payload.announcement_by
+                );
+            }
             message.success('Announced sucessfully');
             setLoading(false);
         } catch (error) {
@@ -460,6 +522,113 @@ export const vikinFirebaseService = {
             message.error(
                 'Something went wrong, cannot fetch emails. Please try again!'
             );
+        }
+    },
+    addEmailTransaction: async (
+        data: EmailSend,
+        emailType: string,
+        userId: string,
+        emailSubject?: string
+    ) => {
+        try {
+            if (data.MessageID && data.TransactionID) {
+                const docRef = doc(
+                    db,
+                    tables.emailTransactions,
+                    data.TransactionID
+                );
+                await setDoc(docRef, {
+                    ...data,
+                    email_type: emailType,
+                    subject: emailSubject || 'N/A',
+                    send_at: JSON.stringify(new Date()),
+                    send_by: userId,
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    getEmailTransactions: async (
+        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+        page: number,
+        pageSize: number,
+        lastDoc: any
+    ): Promise<
+        | {
+              emailTransactions: EmailTransactions[];
+              lastDoc: any;
+              totalDocs: number;
+          }
+        | undefined
+    > => {
+        const docRef = collection(db, tables.emailTransactions);
+
+        try {
+            const totalDocs: number = (await getDocs(docRef)).size;
+            let q = query(docRef, orderBy('subject'), limit(pageSize));
+
+            // If we have a last document, start after it in the next query
+            if (lastDoc && page > 1) {
+                q = query(
+                    docRef,
+                    orderBy('subject'),
+                    startAfter(lastDoc),
+                    limit(pageSize)
+                );
+            }
+
+            const snapShot = await getDocs(q);
+
+            // Get data from docs
+            const emailTransactions = snapShot.docs.map(
+                (doc) => ({ ...doc.data() } as EmailTransactions)
+            );
+
+            // Set last document for next query
+            lastDoc = snapShot.docs[snapShot.docs.length - 1];
+            setLoading(false);
+            return { emailTransactions, lastDoc, totalDocs };
+        } catch (error) {
+            setLoading(false);
+            message.error(
+                'Something went wrong, cannot fetch email transactions. Please try again!'
+            );
+        }
+    },
+    uploadPostRideImages: async (
+        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+        images: string[],
+        rideId: string
+    ) => {
+        const docRef = doc(db, tables.rides, rideId);
+
+        try {
+            await updateDoc(docRef, { images });
+            message.success('Images uploaded succesfully');
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            message.error('Something went wrong, cannot upload images!');
+        }
+    },
+    getPostRideImages: async (
+        setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+        rideId: string
+    ) => {
+        const docRef = doc(db, tables.rides, rideId);
+
+        try {
+            const data = await getDoc(docRef);
+            setLoading(false);
+            if (data.exists()) {
+                return data.data().images as string[];
+            } else {
+                return [];
+            }
+        } catch (error) {
+            setLoading(false);
+            message.error('Something went wrong, cannot fetch images!');
         }
     },
 };

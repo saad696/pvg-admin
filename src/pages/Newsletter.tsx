@@ -1,4 +1,4 @@
-import { Tag } from 'antd';
+import { Card, Col, Row, Statistic, Tag } from 'antd';
 import { useContext, useState } from 'react';
 import { PageTitle, DataTable } from '..';
 import { LoadingContext } from '../context/LoadingContext';
@@ -51,7 +51,7 @@ const tableColumns = [
 ];
 
 const Newsletter = () => {
-    const { setLoading } = useContext(LoadingContext);
+    const { loading, setLoading } = useContext(LoadingContext);
 
     const [lastDoc, setLastDoc] = useState(null);
     const [totalDocsCount, setTotalDocsCount] = useState<number>(0);
@@ -79,9 +79,17 @@ const Newsletter = () => {
         <>
             <PageTitle title={`Vikin - Newsletter`} />
             {totalDocsCount && (
-                <Tag color='#ffd60a' className='font-semibold !mb-4 '>
-                    Total Subscriptions: {totalDocsCount}
-                </Tag>
+                <Row justify={'end'}>
+                    <Col xs={24} md={8} lg={5}>
+                        <Card bordered={false}>
+                            <Statistic
+                                title='Total Subscriptions'
+                                loading={loading}
+                                value={totalDocsCount}
+                            />
+                        </Card>
+                    </Col>
+                </Row>
             )}
             <DataTable<Newsletter>
                 fetchData={fetchData}

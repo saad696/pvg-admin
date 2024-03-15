@@ -3,7 +3,7 @@ import { emailService } from '../services/elasticEmailService';
 import { LoadingContext } from '../context/LoadingContext';
 import parse from 'html-react-parser';
 import { Editor, PageHeader } from '..';
-import { EyeOutlined } from '@ant-design/icons';
+import { BarChartOutlined, EyeOutlined } from '@ant-design/icons';
 import {
     Button,
     Form,
@@ -12,10 +12,12 @@ import {
     Radio,
     RadioChangeEvent,
     Select,
+    message,
 } from 'antd';
-import { tables } from '../utils/constants';
+import { tables, vikinEmailTypes } from '../utils/constants';
 import { vikinFirebaseService } from '../services/firebase/vikinFirebaseService';
 import { EmailMessageData } from '@elasticemail/elasticemail-client-ts-axios';
+import { UserContext } from '../context/UserContext';
 
 type FieldType = {
     subject: string;
@@ -24,6 +26,7 @@ type FieldType = {
 
 const SendEmails = () => {
     const { loading, setLoading } = useContext(LoadingContext);
+    const { user } = useContext(UserContext);
     const [sendEmailForm] = Form.useForm();
 
     const [template, setTemplate] = useState<string>('');
@@ -60,6 +63,10 @@ const SendEmails = () => {
     };
 
     const onSubmit = async (values: FieldType) => {
+        if (!updatedTemplate) {
+            message.error('Please update email body!');
+            return;
+        }
         setLoading(true);
         const emailMessageData: EmailMessageData = {
             Recipients: values.recipents.map((email) => ({ Email: email })),
@@ -71,12 +78,20 @@ const SendEmails = () => {
                         Content: updatedTemplate,
                     },
                 ],
-                From: 'info@vikin.club',
+                EnvelopeFrom: 'Vikin <info@vikin.club>',
+                From: 'Vikin <info@vikin.club>',
                 Subject: values.subject,
             },
         };
 
-        await emailService.sendBulkMail(setLoading, emailMessageData);
+        await emailService.sendBulkMail(
+            setLoading,
+            emailMessageData,
+            vikinEmailTypes.custom,
+            user.user.uid
+        );
+        sendEmailForm.resetFields();
+        setUpdatedTemplate('');
     };
 
     useEffect(() => {
@@ -97,6 +112,12 @@ const SendEmails = () => {
                         visible: true,
                         icon: <EyeOutlined />,
                         onClick: () => setOpenPreviewModal(true),
+                    },
+                    {
+                        name: 'Stats',
+                        visible: true,
+                        icon: <BarChartOutlined />,
+                        route: '/vikin/email/stats',
                     },
                 ]}
             />

@@ -8,6 +8,7 @@ import {
     BlogListing,
     Contact,
     CreateUser,
+    EmailStats,
     Experience,
     ExperienceListing,
     Home,
@@ -221,12 +222,27 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: 'email',
-                        element: (
-                            <ProtectedRoutes
-                                Component={SendEmails}
-                                role={roleAccess.vikin}
-                            />
-                        ),
+                        element: <Outlet />,
+                        children: [
+                            {
+                                index: true,
+                                element: (
+                                    <ProtectedRoutes
+                                        Component={SendEmails}
+                                        role={roleAccess.vikin}
+                                    />
+                                ),
+                            },
+                            {
+                                path: 'stats',
+                                element: (
+                                    <ProtectedRoutes
+                                        Component={EmailStats}
+                                        role={roleAccess.vikin}
+                                    />
+                                ),
+                            }
+                        ],
                     },
                     {
                         path: 'newsletter',

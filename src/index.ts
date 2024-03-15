@@ -17,6 +17,7 @@ export { default as RegisteredUsersDetails } from "./pages/RegisteredUsersDetail
 export { default as Newsletter } from "./pages/Newsletter";
 export { default as RideDetails } from "./pages/RideDetails";
 export { default as SendEmails } from "./pages/SendEmails";
+export { default as EmailStats } from "./pages/EmailStats";
 
 /* auth */
 export { default as Login } from "./auth/Login";
@@ -46,3 +47,5 @@ export { default as BlogFilters } from "./components/blog/BlogFilters";
 export { default as ExperienceCard } from "./components/ExperienceCard";
 export { default as MarkAsReadAction } from "./components/MarkAsReadAction";
 export { default as AnnouncementsList } from "./components/AnnouncementsList";
+export { default as EmailStatsFilters } from "./components/EmailStatsFilters";
+export { default as PostRide } from "./components/PostRide";

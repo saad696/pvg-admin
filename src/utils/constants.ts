@@ -3,6 +3,12 @@ import {
     FlagOutlined,
     CodeOutlined,
     SettingOutlined,
+    NotificationOutlined,
+    UsergroupAddOutlined,
+    ReadOutlined,
+    MailOutlined,
+    MessageOutlined,
+    ContactsOutlined,
 } from '@ant-design/icons';
 
 export const sidebarMenus = [
@@ -15,22 +21,31 @@ export const sidebarMenus = [
                 name: 'Basic Details',
                 path: '/portfolio/basic-details',
                 visibility: ['admin'],
+                icon: null,
             },
             {
                 name: 'Projects',
                 path: '/portfolio/project',
                 visibility: ['admin'],
+                icon: null,
             },
             {
                 name: 'Experience',
                 path: '/portfolio/experience',
                 visibility: ['admin'],
+                icon: null,
             },
-            { name: 'Blogs', path: '/portfolio/blog', visibility: ['admin'] },
+            {
+                name: 'Blogs',
+                path: '/portfolio/blog',
+                visibility: ['admin'],
+                icon: null,
+            },
             {
                 name: 'Contact',
                 path: '/portfolio/contact',
                 visibility: ['admin'],
+                icon: null,
             },
         ],
     },
@@ -43,16 +58,7 @@ export const sidebarMenus = [
                 name: 'Host Rides',
                 path: '/vikin/host-rides',
                 visibility: ['vikin_admin', 'vikin_host', 'admin'],
-            },
-            {
-                name: 'Announcements',
-                path: '/vikin/announcements',
-                visibility: ['vikin_admin', 'vikin_announcer', 'admin'],
-            },
-            {
-                name: 'Registered Users',
-                path: '/vikin/users',
-                visibility: ['vikin_admin'],
+                icon: FlagOutlined,
             },
             {
                 name: 'Newsletter',
@@ -63,21 +69,38 @@ export const sidebarMenus = [
                     'vikin_blog',
                     'admin',
                 ],
+                icon: MessageOutlined,
             },
+            {
+                name: 'Announcements',
+                path: '/vikin/announcements',
+                visibility: ['vikin_admin', 'vikin_announcer', 'admin'],
+                icon: NotificationOutlined,
+            },
+            {
+                name: 'Registered Users',
+                path: '/vikin/users',
+                visibility: ['vikin_admin'],
+                icon: UsergroupAddOutlined,
+            },
+
             {
                 name: 'Send Emails',
                 path: '/vikin/email',
                 visibility: ['vikin_admin', 'vikin_announcer', 'admin'],
+                icon: MailOutlined,
             },
             {
                 name: 'Blogs',
                 path: '/vikin/blog',
                 visibility: ['vikin_admin', 'vikin_blog', 'admin'],
+                icon: ReadOutlined,
             },
             {
                 name: 'Contacts',
                 path: '/vikin/contact',
                 visibility: ['vikin_admin', 'vikin_announcer', 'admin'],
+                icon: ContactsOutlined,
             },
         ],
     },
@@ -90,6 +113,7 @@ export const sidebarMenus = [
                 name: 'Basic Details',
                 path: '/graphyl/basic-details',
                 visibility: ['admin'],
+                icon: null,
             },
         ],
     },
@@ -102,11 +126,13 @@ export const sidebarMenus = [
                 name: 'Create User',
                 path: '/create-user',
                 visibility: ['admin'],
+                icon: null,
             },
             {
                 name: 'Create Tags',
                 path: '/create-tags',
                 visibility: ['admin'],
+                icon: null,
             },
         ],
     },
@@ -148,6 +174,13 @@ export const dateTimeFormats = {
     default: 'MMMM Do YYYY',
     default_with_time: 'MMMM Do YYYY (h:mm:ss a)',
     month_year: 'MMMM YYYY',
+    elastic_format: 'YYYY-MM-DDThh:mm:ss',
+};
+
+export const vikinEmailTypes = {
+    custom: 'custom',
+    announcement: 'announcement',
+    ride: 'vikin-new-ride',
 };
 
 export const tables = {
@@ -164,6 +197,7 @@ export const tables = {
     vikinUsers: 'vikin_users',
     announcements: 'announcements',
     newsletter: 'newsletter',
+    emailTransactions: 'email-transactions',
 };
 
 export const imageTypes = {

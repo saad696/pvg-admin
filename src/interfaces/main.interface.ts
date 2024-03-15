@@ -135,6 +135,7 @@ interface IHostRide extends IHostRideForm {
     createdBy: string;
     updatedAt: Date | string;
     updatedBy: string;
+    images: string[]
 }
 interface ContactDetailsResult {
     contacts: IContact[];
@@ -179,6 +180,15 @@ interface Newsletter {
     name: string;
     email: string;
     mobile: string;
+}
+
+interface EmailTransactions {
+    MessageID: string;
+    TransactionID: string;
+    subject: string;
+    email_type: string;
+    send_at: string;
+    send_by: string
 }
 
 type RideStatus =

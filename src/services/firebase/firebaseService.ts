@@ -677,6 +677,8 @@ export const firebaseService = {
         try {
             await updateDoc(docRef, { read: increment(1) });
             await updateDoc(docRef, { unread: increment(-1) });
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     },
 };
