@@ -1,1 +1,10 @@
-{ "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }] }
+{
+    "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
+    "redirects": [
+        {
+            "source": "/(.*)",
+            "destination": "https://adminuat.vikin.in",
+            "permanent": true
+        }
+    ]
+}

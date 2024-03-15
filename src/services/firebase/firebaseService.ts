@@ -72,7 +72,7 @@ export const firebaseService = {
 
                 if (user.uid) {
                     const docRef = doc(db, tables.userRoles, user.uid);
-                    return setDoc(docRef, { role, subRole });
+                    return setDoc(docRef, { main: role, subRole });
                 } else {
                     setLoading(false);
                     message.error('User creation failed, please try again');
@@ -80,6 +80,7 @@ export const firebaseService = {
             })
             .then((data) => {
                 if (data) {
+                    console.log(data)
                     setLoading(false);
                     message.success('user created!');
                 }

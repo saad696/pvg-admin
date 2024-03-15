@@ -10,7 +10,7 @@ type FieldType = {
     email: string;
     password: string;
     confirmPassword: string;
-    main: string;
+    role: string;
     subRole: string;
 };
 
@@ -84,7 +84,7 @@ const CreateUser = () => {
                     <Col xs={24}>
                         <Form.Item<FieldType>
                             label='Role'
-                            name='main'
+                            name='role'
                             rules={[
                                 { required: true, message: 'Required field' },
                             ]}
