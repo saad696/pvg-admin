@@ -1,6 +1,6 @@
 import { Col, DatePicker, Button, Card, Statistic, Form, Row } from 'antd';
 import dayjs from 'dayjs';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { emailService } from '../services/elasticEmailService';
 import { dateTimeFormats } from '../utils/constants';
 import { LoadingContext } from '../context/LoadingContext';
